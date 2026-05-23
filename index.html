@@ -2,12 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Cinzel:wght@700&display=swap" rel="stylesheet">
 <title>Fan Clicker</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Cinzel:wght@700&display=swap');
+/* fonts loaded via <link> tags */
 *{box-sizing:border-box;margin:0;padding:0;image-rendering:pixelated}
-body{background:#0d0d1a;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Press Start 2P',monospace}
-#G{display:flex;width:980px;height:680px;border:4px solid #4a90d9;position:relative;overflow:hidden}
+body{background:#0d0d1a;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Press Start 2P','Courier New',Courier,monospace}
+#G{display:flex;width:min(980px,100vw);height:min(680px,100vh);border:4px solid #4a90d9;position:relative;overflow:hidden}
 
 /* ── LEFT PANEL ── */
 #LP{width:280px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;border-right:4px solid #4a90d9;position:relative;overflow:hidden;gap:0}
@@ -30,7 +34,7 @@ body{background:#0d0d1a;display:flex;align-items:center;justify-content:center;m
 .sv{color:#0a2a8e}
 
 #BOT-BTNS{display:flex;gap:0;flex-shrink:0}
-.lbtn{flex:1;background:#ffffffcc;border:0;border-top:2px solid #4a90d9;padding:4px 2px;font-size:5px;color:#0a2a6e;cursor:pointer;font-family:'Press Start 2P',monospace;text-align:center;border-right:1px solid #4a90d9}
+.lbtn{flex:1;background:#ffffffcc;border:0;border-top:2px solid #4a90d9;padding:4px 2px;font-size:5px;color:#0a2a6e;cursor:pointer;font-family:'Press Start 2P','Courier New',monospace;text-align:center;border-right:1px solid #4a90d9}
 .lbtn:last-child{border-right:0}
 .lbtn:hover{background:#fff8e0;color:#a05000}
 
@@ -74,15 +78,15 @@ body{background:#0d0d1a;display:flex;align-items:center;justify-content:center;m
 .ov-wood{position:absolute;left:0;right:0;height:7px;background:repeating-linear-gradient(90deg,#5a3a10 0,#7a5a20 4px,#5a3a10 8px);z-index:1}
 .ov-wood.top{top:0}.ov-wood.bot{bottom:0}
 .ov-hdr{z-index:2;padding:10px 14px 7px;border-bottom:2px solid #3a2a10;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;position:relative}
-.ov-title{font-family:'Cinzel',serif;font-size:15px;color:#e8d8a0;text-shadow:0 0 8px #a08040}
-.ov-close{cursor:pointer;color:#c8a040;font-size:7px;padding:3px 8px;border:2px solid #7a5a20;background:#1a1008;font-family:'Press Start 2P',monospace}
+.ov-title{font-family:'Cinzel','Georgia',serif;font-size:15px;color:#e8d8a0;text-shadow:0 0 8px #a08040}
+.ov-close{cursor:pointer;color:#c8a040;font-size:7px;padding:3px 8px;border:2px solid #7a5a20;background:#1a1008;font-family:'Press Start 2P','Courier New',monospace}
 .ov-close:hover{background:#3a2a10}
 .ov-scroll{overflow-y:auto;flex:1;padding:8px 14px;position:relative;z-index:2}
 .ov-scroll::-webkit-scrollbar{width:7px}
 .ov-scroll::-webkit-scrollbar-thumb{background:#5a3a10}
 
 /* Stats */
-.st-sec{font-family:'Cinzel',serif;font-size:12px;color:#e8d8a0;margin:10px 0 5px;padding-bottom:3px;border-bottom:1px solid #3a2a10}
+.st-sec{font-family:'Cinzel','Georgia',serif;font-size:12px;color:#e8d8a0;margin:10px 0 5px;padding-bottom:3px;border-bottom:1px solid #3a2a10}
 .st-row{display:flex;justify-content:space-between;margin-bottom:4px;font-size:5px;color:#a09070}
 .st-row span:first-child{color:#c8b080}
 .st-val{color:#fff;font-size:6px}
@@ -115,9 +119,9 @@ body{background:#0d0d1a;display:flex;align-items:center;justify-content:center;m
 .adm-sec-title{font-size:6px;color:#00ff88;border-bottom:1px solid #003320;padding-bottom:3px;margin:10px 0 5px}
 .adm-row{display:flex;gap:4px;margin-bottom:4px;align-items:center}
 .adm-lbl{font-size:5px;color:#00aa55;min-width:72px;flex-shrink:0}
-.adm-inp{background:#001a0a;border:1px solid #006633;color:#00ff88;font-family:'Press Start 2P',monospace;font-size:5px;padding:3px 5px;flex:1;outline:none}
+.adm-inp{background:#001a0a;border:1px solid #006633;color:#00ff88;font-family:'Press Start 2P','Courier New',monospace;font-size:5px;padding:3px 5px;flex:1;outline:none}
 .adm-inp:focus{border-color:#00ff88}
-.adm-btn{background:#002a10;border:2px solid #00aa55;color:#00ff88;font-family:'Press Start 2P',monospace;font-size:5px;padding:3px 8px;cursor:pointer;white-space:nowrap}
+.adm-btn{background:#002a10;border:2px solid #00aa55;color:#00ff88;font-family:'Press Start 2P','Courier New',monospace;font-size:5px;padding:3px 8px;cursor:pointer;white-space:nowrap}
 .adm-btn:hover{background:#004a20}
 .adm-btn.danger{border-color:#aa2200;color:#ff4444;background:#1a0000}
 .adm-btn.danger:hover{background:#2a0000}
@@ -142,27 +146,27 @@ select.adm-inp{cursor:pointer}
 #NAMEMODAL.show{transform:translate(-50%,-50%) scale(1)}
 #NAMEMODAL h3{font-size:8px;color:#0a2a6e;margin-bottom:8px}
 #NAMEMODAL p{font-size:5px;color:#4a6a8e;margin-bottom:8px;line-height:2.2}
-#NAMINP{width:100%;background:#e8f4ff;border:2px solid #4a90d9;color:#0a2a6e;font-family:'Press Start 2P',monospace;font-size:7px;padding:5px;outline:none;margin-bottom:4px;text-align:center}
+#NAMINP{width:100%;background:#e8f4ff;border:2px solid #4a90d9;color:#0a2a6e;font-family:'Press Start 2P','Courier New',monospace;font-size:7px;padding:5px;outline:none;margin-bottom:4px;text-align:center}
 #NAM-MSG{font-size:5px;color:#f87171;min-height:10px;margin-bottom:4px}
 .nam-btns{display:flex;gap:4px}
-.nam-btn{flex:1;background:#e8f4ff;border:2px solid #4a90d9;padding:5px;font-size:6px;color:#0a2a6e;cursor:pointer;font-family:'Press Start 2P',monospace}
+.nam-btn{flex:1;background:#e8f4ff;border:2px solid #4a90d9;padding:5px;font-size:6px;color:#0a2a6e;cursor:pointer;font-family:'Press Start 2P','Courier New',monospace}
 .nam-btn.confirm{background:#0a2a6e;color:#fff}
 .nam-btn.confirm:hover{background:#1a4a9e}
 #ADMINLOGIN{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:#001a0a;border:3px solid #00ff88;padding:16px;text-align:center;z-index:400;min-width:240px;transition:transform .15s}
 #ADMINLOGIN.show{transform:translate(-50%,-50%) scale(1)}
 #ADMINLOGIN h3{font-size:8px;color:#00ff88;margin-bottom:8px}
 #ADMINLOGIN p{font-size:5px;color:#00aa55;margin-bottom:8px;line-height:2}
-#ADMIN-PW-INP{width:100%;background:#000a05;border:2px solid #006633;color:#00ff88;font-family:'Press Start 2P',monospace;font-size:7px;padding:5px;outline:none;margin-bottom:5px;text-align:center;letter-spacing:3px}
+#ADMIN-PW-INP{width:100%;background:#000a05;border:2px solid #006633;color:#00ff88;font-family:'Press Start 2P','Courier New',monospace;font-size:7px;padding:5px;outline:none;margin-bottom:5px;text-align:center;letter-spacing:3px}
 #ADMIN-PW-MSG{font-size:5px;color:#ff4444;min-height:8px;margin-bottom:5px}
 .adm-login-btns{display:flex;gap:4px}
 
 /* Float text & particles */
-.ftxt{position:absolute;font-family:'Press Start 2P',monospace;font-size:8px;color:#0a2a8e;pointer-events:none;z-index:20;animation:fu .8s ease-out forwards;text-shadow:1px 1px #fff}
+.ftxt{position:absolute;font-family:'Press Start 2P','Courier New',monospace;font-size:8px;color:#0a2a8e;pointer-events:none;z-index:20;animation:fu .8s ease-out forwards;text-shadow:1px 1px #fff}
 @keyframes fu{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-50px)}}
 .px{position:absolute;width:4px;height:4px;opacity:0;animation:pxf 1s ease-out forwards;pointer-events:none}
 @keyframes pxf{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(0) translateY(-30px)}}
 #PIXBG{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:hidden}
-#TIP{position:fixed;background:#0a0808;border:3px solid #7a5a20;padding:6px 8px;font-family:'Press Start 2P',monospace;font-size:5px;color:#c8b080;pointer-events:none;z-index:600;max-width:190px;line-height:2;display:none}
+#TIP{position:fixed;background:#0a0808;border:3px solid #7a5a20;padding:6px 8px;font-family:'Press Start 2P','Courier New',monospace;font-size:5px;color:#c8b080;pointer-events:none;z-index:600;max-width:190px;line-height:2;display:none}
 </style>
 </head>
 <body>
