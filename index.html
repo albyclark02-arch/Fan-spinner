@@ -1,0 +1,842 @@
+cat > /home/claude/fan_clicker_v6.html << 'HTMLEOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fan Clicker</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Cinzel:wght@700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;image-rendering:pixelated}
+body{background:#0d0d1a;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Press Start 2P',monospace}
+#G{display:flex;width:980px;height:680px;border:4px solid #4a90d9;position:relative;overflow:hidden}
+
+/* ── LEFT PANEL ── */
+#LP{width:280px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;border-right:4px solid #4a90d9;position:relative;overflow:hidden;gap:0}
+#SKYBG{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+#LP>*{position:relative;z-index:1;width:100%}
+
+#TOP-INFO{display:flex;flex-direction:column;align-items:center;padding:6px 6px 0;gap:3px}
+.lbl{font-size:5px;color:#1a3a6e;background:#ffffffbb;padding:2px 6px;border:2px solid #4a90d9;text-align:center;width:fit-content;align-self:center}
+#SPINS{font-size:12px;color:#0a2a5e;background:#ffffffdd;padding:3px 10px;border:3px solid #4a90d9;text-align:center;align-self:center}
+#SPS{font-size:5px;color:#0a4a2e;background:#c8f0d8dd;padding:2px 6px;border:2px solid #2a8a4e;align-self:center}
+#FANNAME-DISPLAY{font-size:5px;color:#0a2a5e;background:#ffffffbb;padding:2px 6px;border:2px solid #aac8e0;cursor:pointer;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+
+#FC{width:160px;height:160px;flex-shrink:0;cursor:pointer;align-self:center;margin:4px auto}
+#fanC{display:block}
+
+#TICKER{font-size:5px;color:#0a2a5e;background:#ffffffcc;border-top:2px solid #4a90d9;border-bottom:2px solid #4a90d9;padding:3px 6px;overflow:hidden;white-space:nowrap;flex-shrink:0}
+
+#SBOX{background:#ffffffaa;border-top:2px solid #4a90d9;padding:4px 8px;font-size:5px;flex-shrink:0}
+.srow{display:flex;justify-content:space-between;margin-bottom:2px;color:#1a3a6e}
+.sv{color:#0a2a8e}
+
+#BOT-BTNS{display:flex;gap:0;flex-shrink:0}
+.lbtn{flex:1;background:#ffffffcc;border:0;border-top:2px solid #4a90d9;padding:4px 2px;font-size:5px;color:#0a2a6e;cursor:pointer;font-family:'Press Start 2P',monospace;text-align:center;border-right:1px solid #4a90d9}
+.lbtn:last-child{border-right:0}
+.lbtn:hover{background:#fff8e0;color:#a05000}
+
+/* ── RIGHT PANEL ── */
+#RP{flex:1;display:flex;flex-direction:column;background:#e8f4ff;overflow:hidden}
+#UPGROW-HDR{background:#b0d4f0;border-bottom:3px solid #4a90d9;padding:4px 8px;font-size:6px;color:#0a2a6e;flex-shrink:0}
+#UPGROW{display:flex;gap:3px;padding:4px 6px;flex-wrap:wrap;border-bottom:3px solid #4a90d9;min-height:46px;background:#cce4f8;flex-shrink:0}
+.uchip{width:36px;height:36px;background:#fff;border:3px solid #4a90d9;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;flex-shrink:0}
+.uchip:hover{border-color:#f0a020;background:#fff8e0}
+.uchip.bought{opacity:.3;cursor:default;border-color:#aac8e0}
+#SHOPHDR{background:#a8ccec;border-bottom:3px solid #4a90d9;padding:5px 10px;font-size:8px;color:#0a2a6e;flex-shrink:0;display:flex;justify-content:space-between;align-items:center}
+#SHOPSCROLL{overflow-y:auto;flex:1;padding:4px 6px;background:#e8f4ff}
+#SHOPSCROLL::-webkit-scrollbar{width:6px}
+#SHOPSCROLL::-webkit-scrollbar-thumb{background:#4a90d9}
+#SHOPSCROLL::-webkit-scrollbar-track{background:#c8e0f8}
+
+/* Shop items */
+.tier-hdr{font-size:6px;background:#1a3a6e;color:#e8f4ff;padding:4px 8px;margin:4px 0 3px;letter-spacing:1px}
+.si{display:flex;align-items:center;background:#fff;border:3px solid #c0d8ee;margin-bottom:4px;padding:5px 6px;cursor:pointer;gap:6px}
+.si:hover{border-color:#4a90d9}
+.si.aff{border-color:#4a90d9}
+.si.aff:hover{border-color:#f0a020;background:#fffce8}
+.si.sil{cursor:default;background:#e0e8f0}
+.si.sil:hover{border-color:#c0d8ee}
+.si-icon-box{width:44px;height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px;background:#d8ecf8;border:2px solid #b8d4e8}
+.si-icon-box.dark{background:#1a1a2a;border-color:#333;font-size:26px}
+.si-icon-box.dark .si-icon{filter:brightness(0)}
+.si-name{font-size:6px;color:#0a2a6e;margin-bottom:2px}
+.si-desc{font-size:5px;color:#4a70ae;margin-bottom:3px}
+.si-bot{display:flex;justify-content:space-between;align-items:center}
+.si-cnt{font-size:5px;color:#1a8a3e}
+.si-sps{font-size:5px;color:#0a6a8e}
+.si-cost{font-size:7px;color:#8a4a00;font-weight:bold}
+.si-costsub{font-size:4px;color:#4a70ae}
+.si-right{text-align:right;min-width:64px;flex-shrink:0}
+
+/* Overlays */
+.overlay{position:absolute;inset:0;z-index:50;display:none;flex-direction:column}
+.overlay.open{display:flex}
+.ov-bg{position:absolute;inset:0;background:#111008;z-index:0}
+.ov-wood{position:absolute;left:0;right:0;height:7px;background:repeating-linear-gradient(90deg,#5a3a10 0,#7a5a20 4px,#5a3a10 8px);z-index:1}
+.ov-wood.top{top:0}.ov-wood.bot{bottom:0}
+.ov-hdr{z-index:2;padding:10px 14px 7px;border-bottom:2px solid #3a2a10;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;position:relative}
+.ov-title{font-family:'Cinzel',serif;font-size:15px;color:#e8d8a0;text-shadow:0 0 8px #a08040}
+.ov-close{cursor:pointer;color:#c8a040;font-size:7px;padding:3px 8px;border:2px solid #7a5a20;background:#1a1008;font-family:'Press Start 2P',monospace}
+.ov-close:hover{background:#3a2a10}
+.ov-scroll{overflow-y:auto;flex:1;padding:8px 14px;position:relative;z-index:2}
+.ov-scroll::-webkit-scrollbar{width:7px}
+.ov-scroll::-webkit-scrollbar-thumb{background:#5a3a10}
+
+/* Stats */
+.st-sec{font-family:'Cinzel',serif;font-size:12px;color:#e8d8a0;margin:10px 0 5px;padding-bottom:3px;border-bottom:1px solid #3a2a10}
+.st-row{display:flex;justify-content:space-between;margin-bottom:4px;font-size:5px;color:#a09070}
+.st-row span:first-child{color:#c8b080}
+.st-val{color:#fff;font-size:6px}
+.st-val.gold{color:#ffd060}
+.st-val.green{color:#60d890}
+.st-val.blue{color:#60b0f8}
+.brow{display:flex;align-items:center;gap:6px;background:#1a1208;border:1px solid #2a1a08;padding:4px 6px;margin-bottom:3px}
+.brow-icon{font-size:13px;width:18px;text-align:center;flex-shrink:0}
+.brow-name{font-size:5px;color:#c8b080;margin-bottom:1px}
+.brow-sub{font-size:4px;color:#806040}
+.brow-cnt{font-size:7px;color:#ffd060;min-width:24px;text-align:right}
+
+/* Ach panel */
+.ach-sec{font-size:6px;color:#c8b080;margin:8px 0 4px;padding-bottom:3px;border-bottom:1px solid #2a1a08}
+.ap-row{display:flex;align-items:center;gap:5px;background:#1a1208;border:1px solid #2a1a08;padding:4px;margin-bottom:3px;cursor:pointer}
+.ap-row:hover{border-color:#5a3a10}
+.ap-icon{font-size:15px;width:22px;text-align:center;flex-shrink:0}
+.ap-name{font-size:5px;color:#c8b080;margin-bottom:1px}
+.ap-desc{font-size:4px;color:#6a5a40;line-height:1.6}
+.ap-bar{width:100%;height:4px;background:#0a0808;border:1px solid #1a1008;margin-top:2px}
+.ap-fill{height:100%}
+.ap-tier{font-size:4px;min-width:36px;text-align:right;flex-shrink:0}
+.fan-chip{font-size:20px;width:38px;height:38px;background:#1a1208;border:3px solid #2a1a08;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
+.fan-chip.earned{border-color:#ffd060}
+.fan-chip-lbl{font-size:4px;margin-top:1px}
+
+/* Admin */
+#ADMINPANEL .ov-bg{background:#001a0a}
+#ADMINPANEL .ov-wood{background:repeating-linear-gradient(90deg,#001a0a 0,#003320 4px,#001a0a 8px)}
+.adm-sec-title{font-size:6px;color:#00ff88;border-bottom:1px solid #003320;padding-bottom:3px;margin:10px 0 5px}
+.adm-row{display:flex;gap:4px;margin-bottom:4px;align-items:center}
+.adm-lbl{font-size:5px;color:#00aa55;min-width:72px;flex-shrink:0}
+.adm-inp{background:#001a0a;border:1px solid #006633;color:#00ff88;font-family:'Press Start 2P',monospace;font-size:5px;padding:3px 5px;flex:1;outline:none}
+.adm-inp:focus{border-color:#00ff88}
+.adm-btn{background:#002a10;border:2px solid #00aa55;color:#00ff88;font-family:'Press Start 2P',monospace;font-size:5px;padding:3px 8px;cursor:pointer;white-space:nowrap}
+.adm-btn:hover{background:#004a20}
+.adm-btn.danger{border-color:#aa2200;color:#ff4444;background:#1a0000}
+.adm-btn.danger:hover{background:#2a0000}
+.adm-msg{font-size:5px;color:#00ff88;margin-top:3px;min-height:10px}
+select.adm-inp{cursor:pointer}
+
+/* Popups */
+#POPUP{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:#1a1208;border:4px solid #f0a020;padding:14px 18px;text-align:center;z-index:200;transition:transform .15s;min-width:220px;max-width:280px}
+#POPUP.show{transform:translate(-50%,-50%) scale(1)}
+#POPIC{font-size:38px;margin-bottom:6px}
+#POPTIT{font-size:7px;color:#f0a020;margin-bottom:5px}
+#POPNAME{font-size:9px;color:#e8d8a0;margin-bottom:3px}
+#POPDESC{font-size:5px;color:#a09070;line-height:2}
+#POPREWARD{font-size:5px;color:#60d890;margin-top:5px}
+#FANREWARD{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:#111008;border:5px solid #ffd060;padding:16px 20px;text-align:center;z-index:250;transition:transform .2s;min-width:260px;cursor:pointer}
+#FANREWARD.show{transform:translate(-50%,-50%) scale(1)}
+#FR-ICON{font-size:50px;margin-bottom:6px}
+#FR-TIT{font-size:7px;color:#ffd060;margin-bottom:4px}
+#FR-NAME{font-size:10px;color:#e8d8a0;margin-bottom:4px;text-transform:capitalize}
+#FR-DESC{font-size:5px;color:#a09070;line-height:2}
+#NAMEMODAL{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:#fff;border:4px solid #4a90d9;padding:14px;text-align:center;z-index:300;transition:transform .15s;min-width:240px}
+#NAMEMODAL.show{transform:translate(-50%,-50%) scale(1)}
+#NAMEMODAL h3{font-size:8px;color:#0a2a6e;margin-bottom:8px}
+#NAMEMODAL p{font-size:5px;color:#4a6a8e;margin-bottom:8px;line-height:2.2}
+#NAMINP{width:100%;background:#e8f4ff;border:2px solid #4a90d9;color:#0a2a6e;font-family:'Press Start 2P',monospace;font-size:7px;padding:5px;outline:none;margin-bottom:4px;text-align:center}
+#NAM-MSG{font-size:5px;color:#f87171;min-height:10px;margin-bottom:4px}
+.nam-btns{display:flex;gap:4px}
+.nam-btn{flex:1;background:#e8f4ff;border:2px solid #4a90d9;padding:5px;font-size:6px;color:#0a2a6e;cursor:pointer;font-family:'Press Start 2P',monospace}
+.nam-btn.confirm{background:#0a2a6e;color:#fff}
+.nam-btn.confirm:hover{background:#1a4a9e}
+#ADMINLOGIN{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:#001a0a;border:3px solid #00ff88;padding:16px;text-align:center;z-index:400;min-width:240px;transition:transform .15s}
+#ADMINLOGIN.show{transform:translate(-50%,-50%) scale(1)}
+#ADMINLOGIN h3{font-size:8px;color:#00ff88;margin-bottom:8px}
+#ADMINLOGIN p{font-size:5px;color:#00aa55;margin-bottom:8px;line-height:2}
+#ADMIN-PW-INP{width:100%;background:#000a05;border:2px solid #006633;color:#00ff88;font-family:'Press Start 2P',monospace;font-size:7px;padding:5px;outline:none;margin-bottom:5px;text-align:center;letter-spacing:3px}
+#ADMIN-PW-MSG{font-size:5px;color:#ff4444;min-height:8px;margin-bottom:5px}
+.adm-login-btns{display:flex;gap:4px}
+
+/* Float text & particles */
+.ftxt{position:absolute;font-family:'Press Start 2P',monospace;font-size:8px;color:#0a2a8e;pointer-events:none;z-index:20;animation:fu .8s ease-out forwards;text-shadow:1px 1px #fff}
+@keyframes fu{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-50px)}}
+.px{position:absolute;width:4px;height:4px;opacity:0;animation:pxf 1s ease-out forwards;pointer-events:none}
+@keyframes pxf{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(0) translateY(-30px)}}
+#PIXBG{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:hidden}
+#TIP{position:fixed;background:#0a0808;border:3px solid #7a5a20;padding:6px 8px;font-family:'Press Start 2P',monospace;font-size:5px;color:#c8b080;pointer-events:none;z-index:600;max-width:190px;line-height:2;display:none}
+</style>
+</head>
+<body>
+<div id="G">
+  <div id="PIXBG"></div>
+
+  <!-- LEFT PANEL -->
+  <div id="LP">
+    <canvas id="SKYBG"></canvas>
+
+    <div id="TOP-INFO">
+      <div class="lbl">TOTAL SPINS</div>
+      <div id="SPINS">0</div>
+      <div id="SPS">0 spins/sec</div>
+      <div id="FANNAME-DISPLAY" title="Click to name your fan">🌀 My Ceiling Fan</div>
+    </div>
+
+    <div id="FC"><canvas id="fanC" width="160" height="160"></canvas></div>
+
+    <div id="TICKER">📰 News: "Local fan sparks neighbourhood revolution"</div>
+
+    <div id="SBOX">
+      <div class="srow"><span>ever spun</span><span class="sv" id="SE">0</span></div>
+      <div class="srow"><span>by hand</span><span class="sv" id="SH">0</span></div>
+      <div class="srow"><span>auto</span><span class="sv" id="SA">0</span></div>
+      <div class="srow"><span>upgrades</span><span class="sv" id="SUP">0</span></div>
+      <div class="srow"><span>achievements</span><span class="sv" id="SACH">0/0</span></div>
+    </div>
+
+    <div id="BOT-BTNS">
+      <div class="lbtn" id="STATBTN">📊 stats</div>
+      <div class="lbtn" id="ACHBTN">🏆 achs <span id="ACHBADGE" style="background:#d03020;color:#fff;padding:0 3px">0</span></div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div id="RP">
+    <div id="UPGROW-HDR">✦ upgrades available</div>
+    <div id="UPGROW"></div>
+    <div id="SHOPHDR"><span>🏪 shop</span><span id="SHOP-LBL" style="font-size:5px;color:#0a6a8e"></span></div>
+    <div id="SHOPSCROLL"></div>
+  </div>
+
+  <!-- STAT OVERLAY -->
+  <div class="overlay" id="STATPANEL">
+    <div class="ov-bg"></div><div class="ov-wood top"></div><div class="ov-wood bot"></div>
+    <div class="ov-hdr"><div></div><div class="ov-title">Statistics</div><div class="ov-close" id="STATCLOSE">✕</div></div>
+    <div class="ov-scroll" id="STATSCROLL"></div>
+  </div>
+
+  <!-- ACH OVERLAY -->
+  <div class="overlay" id="ACHPANEL">
+    <div class="ov-bg"></div><div class="ov-wood top"></div><div class="ov-wood bot"></div>
+    <div class="ov-hdr"><div></div><div class="ov-title">Achievements</div><div class="ov-close" id="ACHCLOSE">✕</div></div>
+    <div class="ov-scroll" id="ACHSCROLL"></div>
+  </div>
+
+  <!-- ADMIN OVERLAY -->
+  <div class="overlay" id="ADMINPANEL">
+    <div class="ov-bg"></div><div class="ov-wood top"></div><div class="ov-wood bot"></div>
+    <div class="ov-hdr" style="border-bottom-color:#003320"><div></div><div class="ov-title" style="color:#00ff88;text-shadow:0 0 8px #00ff88">⚙ Admin Panel</div><div class="ov-close" id="ADMINCLOSE" style="color:#00ff88;border-color:#006633">✕</div></div>
+    <div class="ov-scroll" id="ADMSCROLL">
+      <div class="adm-sec-title">💰 Give Spins to Fan</div>
+      <div class="adm-row"><span class="adm-lbl">Fan Name:</span><input class="adm-inp" id="adm-fan-name" placeholder="exact fan name"></div>
+      <div class="adm-row"><span class="adm-lbl">Amount:</span><input class="adm-inp" id="adm-spin-amt" type="number" placeholder="e.g. 1000"></div>
+      <div class="adm-row"><div class="adm-btn" onclick="adminGiveSpins()">▶ Give Spins</div></div>
+      <div class="adm-msg" id="adm-spin-msg"></div>
+
+      <div class="adm-sec-title">🔐 Give Secret Item</div>
+      <div class="adm-row"><span class="adm-lbl">Fan Name:</span><input class="adm-inp" id="adm-secret-fan" placeholder="exact fan name"></div>
+      <div class="adm-row"><span class="adm-lbl">Item:</span>
+        <select class="adm-inp" id="adm-secret-item">
+          <option value="corrupted_fan">🌑 Corrupted Fan (+500K SPS)</option>
+          <option value="the_watcher">👁️ The Watcher (+2M SPS)</option>
+          <option value="infinite_room">♾️ Infinite Room Fan (+10M SPS)</option>
+        </select>
+      </div>
+      <div class="adm-row"><div class="adm-btn" onclick="adminGiveSecret()">▶ Give Secret Item</div></div>
+      <div class="adm-msg" id="adm-secret-msg"></div>
+
+      <div class="adm-sec-title">📈 Economy</div>
+      <div class="adm-row"><span class="adm-lbl">Set Spins:</span><input class="adm-inp" id="adm-set-spins" type="number" placeholder="exact amount"></div>
+      <div class="adm-row"><div class="adm-btn" onclick="adminSetSpins()">▶ Set</div></div>
+      <div class="adm-row"><span class="adm-lbl">SPS Mult:</span><input class="adm-inp" id="adm-mult" type="number" placeholder="e.g. 2" step="0.1"></div>
+      <div class="adm-row"><div class="adm-btn" onclick="adminSetMult()">▶ Apply</div></div>
+      <div class="adm-msg" id="adm-eco-msg"></div>
+
+      <div class="adm-sec-title">📰 News Ticker</div>
+      <div class="adm-row"><input class="adm-inp" id="adm-news" placeholder="Custom news message..."></div>
+      <div class="adm-row"><div class="adm-btn" onclick="adminSetNews()">▶ Inject</div></div>
+
+      <div class="adm-sec-title">🏆 Force Achievement</div>
+      <div class="adm-row"><span class="adm-lbl">Ach ID:</span><input class="adm-inp" id="adm-ach-id" placeholder="e.g. a1"></div>
+      <div class="adm-row"><div class="adm-btn" onclick="adminForceAch()">▶ Unlock</div></div>
+      <div class="adm-msg" id="adm-ach-msg"></div>
+
+      <div class="adm-sec-title" style="color:#ff4444">⚠ Danger Zone</div>
+      <div class="adm-row">
+        <div class="adm-btn danger" onclick="adminReset()">🗑 Reset All</div>
+        <div class="adm-btn danger" onclick="adminUnlockAll()">🔓 Unlock All Achs</div>
+      </div>
+
+      <div class="adm-sec-title">📊 Analytics</div>
+      <div id="ADM-ANALYTICS" style="font-size:5px;color:#00aa55;line-height:2.2"></div>
+    </div>
+  </div>
+
+  <!-- FAN REWARD -->
+  <div id="FANREWARD" onclick="this.classList.remove('show')">
+    <div id="FR-ICON">🌀</div>
+    <div id="FR-TIT">🎉 new fan unlocked!</div>
+    <div id="FR-NAME">Fan Name</div>
+    <div id="FR-DESC">You earned a new fan!</div>
+    <div style="font-size:4px;color:#60d890;margin-top:6px">(click to dismiss)</div>
+  </div>
+
+  <!-- ACH POPUP -->
+  <div id="POPUP">
+    <div id="POPIC">🏆</div>
+    <div id="POPTIT">achievement unlocked!</div>
+    <div id="POPNAME"></div>
+    <div id="POPDESC"></div>
+    <div id="POPREWARD"></div>
+  </div>
+
+  <!-- NAME MODAL -->
+  <div id="NAMEMODAL">
+    <h3>🌀 Name Your Fan</h3>
+    <p>Give your fan a unique name.<br>Names must be unique!</p>
+    <input id="NAMINP" maxlength="20" placeholder="Enter fan name...">
+    <div id="NAM-MSG"></div>
+    <div class="nam-btns">
+      <div class="nam-btn" id="NAM-CANCEL">Cancel</div>
+      <div class="nam-btn confirm" id="NAM-CONFIRM">✓ Name It!</div>
+    </div>
+  </div>
+
+  <!-- ADMIN LOGIN -->
+  <div id="ADMINLOGIN">
+    <h3>⚙ ADMIN ACCESS</h3>
+    <p>Enter admin password:</p>
+    <input type="password" id="ADMIN-PW-INP" maxlength="30">
+    <div id="ADMIN-PW-MSG"></div>
+    <div class="adm-login-btns">
+      <div class="adm-btn" onclick="$('ADMINLOGIN').classList.remove('show')">Cancel</div>
+      <div class="adm-btn" onclick="checkAdminPw()">▶ Login</div>
+    </div>
+  </div>
+
+  <div id="TIP"></div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const fmt=n=>{n=Math.floor(n);if(n<1e3)return n.toLocaleString();if(n<1e6)return(n/1e3).toFixed(1)+'K';if(n<1e9)return(n/1e6).toFixed(2)+'M';if(n<1e12)return(n/1e9).toFixed(2)+'B';if(n<1e15)return(n/1e12).toFixed(2)+'T';if(n<1e18)return(n/1e15).toFixed(2)+'Qa';return(n/1e18).toFixed(2)+'Qi'};
+const fmtF=n=>{if(n<1e3)return n.toFixed(2);if(n<1e6)return(n/1e3).toFixed(2)+'K';if(n<1e9)return(n/1e6).toFixed(2)+'M';if(n<1e12)return(n/1e9).toFixed(2)+'B';return(n/1e15).toFixed(2)+'T'};
+
+// ── GAME STATE ──
+const TAKEN=new Set(['My Ceiling Fan','The Big Spin','Breezy McBreeze','Cool Operator']);
+const G={spins:0,total:0,hand:0,auto:0,sps:0,clickPow:1,angle:0,speed:0,bldgs:[],boughtUpg:new Set(),boughtAch:new Set(),newAch:0,newsI:0,newsT:0,startTime:Date.now(),clicks:0,fanName:'My Ceiling Fan',cloudClicks:0,statsOpens:0,secretItems:new Set(),fansEarned:[]};
+
+// ── BUILDINGS ──
+const BDEFS=[
+  {id:'assist',name:'hand assist',icon:'🖐️',desc:'Helper hand, 0.1/sec',base:10,bsps:.1,tier:'early'},
+  {id:'desk',name:'desk fan',icon:'🌀',desc:'Tiny desk fan hums away',base:75,bsps:.5,tier:'early'},
+  {id:'box',name:'box fan',icon:'📦',desc:'Big box fan, hallway hero',base:500,bsps:3,tier:'early'},
+  {id:'finger',name:'finger flicker',icon:'✌️',desc:'Speed-flick for extra spins',base:900,bsps:5,tier:'early'},
+  {id:'usb',name:'USB fan',icon:'🔌',desc:'Powered by your laptop',base:2500,bsps:10,tier:'early'},
+  {id:'paper',name:'paper fan',icon:'📰',desc:'Old school but it works',base:4000,bsps:18,tier:'early'},
+  {id:'hairdryer',name:'hair dryer',icon:'💨',desc:'Not for hair — for spins',base:8000,bsps:40,tier:'early'},
+  {id:'vacuum',name:'vacuum cleaner',icon:'🧹',desc:'Reverse mode = fan mode',base:15000,bsps:90,tier:'early'},
+  {id:'leafblower',name:'leaf blower',icon:'🍃',desc:'Most powerful garden tool',base:30000,bsps:200,tier:'early'},
+  {id:'industrial',name:'industrial fan',icon:'⚙️',desc:'Factory-grade air mover',base:80000,bsps:500,tier:'mid'},
+  {id:'motor',name:'electric motor',icon:'🔋',desc:'Pure electrical spin power',base:200000,bsps:1200,tier:'mid'},
+  {id:'windturb',name:'wind turbine',icon:'🌬️',desc:'Harnesses outdoor wind',base:600000,bsps:3500,tier:'mid'},
+  {id:'heli',name:'helicopter rotor',icon:'🚁',desc:'Borrowed from a helicopter',base:2e6,bsps:10000,tier:'mid'},
+  {id:'ac',name:'air conditioner',icon:'❄️',desc:'Industrial cooling unit',base:6e6,bsps:30000,tier:'mid'},
+  {id:'server',name:'server farm cooling',icon:'🖥️',desc:'1000 fans cooling servers',base:20e6,bsps:100000,tier:'mid'},
+  {id:'hydro',name:'hydro turbine',icon:'💧',desc:'Waterfall-powered rotation',base:80e6,bsps:350000,tier:'mid'},
+  {id:'rocket',name:'rocket booster',icon:'🚀',desc:'Repurposed rocket engine',base:300e6,bsps:1e6,tier:'mid'},
+  {id:'jet',name:'jet engine',icon:'✈️',desc:'Jet propulsion mega spins',base:1e9,bsps:4e6,tier:'late'},
+  {id:'tornado',name:'tornado',icon:'🌪️',desc:'Harvest a real tornado',base:5e9,bsps:15e6,tier:'late'},
+  {id:'hurricane',name:'hurricane engine',icon:'🌀',desc:'Eye of the storm',base:20e9,bsps:60e6,tier:'late'},
+  {id:'atmosphere',name:'atmosphere reactor',icon:'🌍',desc:'Spin the atmosphere itself',base:100e9,bsps:250e6,tier:'late'},
+  {id:'flysom',name:'flysom fan grid',icon:'🔵',desc:'Dyson-sphere fan array',base:500e9,bsps:1e9,tier:'late'},
+  {id:'planet',name:'planet spinner',icon:'🪐',desc:'A spinning planet',base:2e12,bsps:4e9,tier:'late'},
+  {id:'blackhole',name:'black hole turbine',icon:'🕳️',desc:'Gravity wells = infinite spin',base:10e12,bsps:20e9,tier:'late'},
+  {id:'quantum',name:'quantum wind core',icon:'⚛️',desc:'Quantum superposition fans',base:50e12,bsps:100e9,tier:'late'},
+  {id:'singularity',name:'spin singularity',icon:'🌌',desc:'Reality itself spinning',base:500e12,bsps:1e12,tier:'late'},
+];
+BDEFS.forEach(d=>G.bldgs.push({...d,count:0,mult:1}));
+const cnt=id=>{const b=G.bldgs.find(x=>x.id===id);return b?b.count:0};
+const boost=(id,m)=>{const b=G.bldgs.find(x=>x.id===id);if(b){b.mult*=m;recalc()}};
+
+// ── UPGRADES ──
+const UPGS=[
+  {id:'u1',name:'oiled bearings',icon:'🛢️',desc:'+2x click',cost:50,req:()=>G.total>=25,apply:()=>G.clickPow*=2},
+  {id:'u2',name:'aero blades',icon:'🔧',desc:'+3x click',cost:500,req:()=>G.total>=100,apply:()=>G.clickPow*=3},
+  {id:'u3',name:'carbon fibre',icon:'💎',desc:'+5x click',cost:5000,req:()=>G.total>=500,apply:()=>G.clickPow*=5},
+  {id:'u4',name:'quantum bearings',icon:'⚛️',desc:'+10x click',cost:50000,req:()=>G.total>=5000,apply:()=>G.clickPow*=10},
+  {id:'u5',name:'desk fan turbo',icon:'⚡',desc:'Desk fans 2x',cost:1500,req:()=>cnt('desk')>=5,apply:()=>boost('desk',2)},
+  {id:'u6',name:'box fan overload',icon:'🔥',desc:'Box fans 2x',cost:8000,req:()=>cnt('box')>=5,apply:()=>boost('box',2)},
+  {id:'u7',name:'motor v2',icon:'🤖',desc:'Motors 2x',cost:50000,req:()=>cnt('motor')>=5,apply:()=>boost('motor',2)},
+  {id:'u8',name:'turb array',icon:'🌬️',desc:'Turbines 3x',cost:300000,req:()=>cnt('windturb')>=5,apply:()=>boost('windturb',3)},
+  {id:'u9',name:'afterburner',icon:'🔴',desc:'Jets 3x',cost:2e6,req:()=>cnt('jet')>=5,apply:()=>boost('jet',3)},
+  {id:'u10',name:'storm farm',icon:'🌩️',desc:'Tornados 3x',cost:15e6,req:()=>cnt('tornado')>=5,apply:()=>boost('tornado',3)},
+  {id:'u11',name:'singularity core',icon:'🌀',desc:'Singularities 5x',cost:5e8,req:()=>cnt('singularity')>=5,apply:()=>boost('singularity',5)},
+  {id:'u12',name:'turbo click 1',icon:'👆',desc:'+2x click',cost:200,req:()=>G.hand>=50,apply:()=>G.clickPow*=2},
+  {id:'u13',name:'turbo click 2',icon:'✌️',desc:'+3x click',cost:2000,req:()=>G.hand>=500,apply:()=>G.clickPow*=3},
+  {id:'u14',name:'finger frenzy',icon:'🤙',desc:'+5x click',cost:20000,req:()=>G.hand>=5000,apply:()=>G.clickPow*=5},
+  {id:'u15',name:'mega fan',icon:'🎆',desc:'All buildings 1.5x',cost:1e6,req:()=>G.total>=10000,apply:()=>{G.bldgs.forEach(b=>b.mult*=1.5);recalc()}},
+  {id:'u16',name:'leaf blower mod',icon:'🍃',desc:'Leaf blowers 2x',cost:60000,req:()=>cnt('leafblower')>=5,apply:()=>boost('leafblower',2)},
+  {id:'u17',name:'industrial v2',icon:'🏭',desc:'Industrial fans 2x',cost:200000,req:()=>cnt('industrial')>=5,apply:()=>boost('industrial',2)},
+  {id:'u18',name:'server cooling v2',icon:'💻',desc:'Server farms 3x',cost:80e6,req:()=>cnt('server')>=5,apply:()=>boost('server',3)},
+  {id:'u19',name:'rocket fuel+',icon:'💥',desc:'Rockets 3x',cost:500e6,req:()=>cnt('rocket')>=5,apply:()=>boost('rocket',3)},
+  {id:'u20',name:'atmosphere tap',icon:'🌍',desc:'Atmosphere 2x',cost:200e9,req:()=>cnt('atmosphere')>=3,apply:()=>boost('atmosphere',2)},
+];
+
+// ── SECRET ITEMS ──
+const SECRETS={
+  corrupted_fan:{name:'Corrupted Fan',icon:'🌑',desc:'A fan that stares back.',sps:500000},
+  the_watcher:{name:'The Watcher',icon:'👁️',desc:'It was always watching.',sps:2000000},
+  infinite_room:{name:'Infinite Room Fan',icon:'♾️',desc:'A room with no walls.',sps:10000000},
+};
+
+// ── FAN REWARDS (every 25 achs) ──
+const FAN_REWARDS=[
+  {at:25,icon:'🌟',name:'golden gust',desc:'Gold-tipped blades for true beginners.'},
+  {at:50,icon:'❄️',name:'arctic blade',desc:'Ice-cold blades that freeze the air.'},
+  {at:75,icon:'🔥',name:'inferno spinner',desc:'Blazing blades at volcanic speeds.'},
+  {at:100,icon:'⚡',name:'lightning rotor',desc:'Every spin crackles with electricity.'},
+  {at:125,icon:'🌈',name:'prism fan',desc:'Refracts light into rainbows.'},
+  {at:150,icon:'🌑',name:'void blade',desc:'Pure darkness. Absorbs light itself.'},
+  {at:175,icon:'🐉',name:'dragon wing fan',desc:'Scales from an actual dragon.'},
+  {at:200,icon:'👑',name:'crown spinner',desc:'Forged from royal gold. Only emperors own this.'},
+];
+
+// ── ACHIEVEMENTS ──
+const TC={c:'#cd7f32',s:'#c0c0c0',g:'#ffd700',e:'#9b59b6',l:'#e74c3c',sec:'#00ffcc'};
+const TN={c:'common',s:'rare',g:'epic',e:'legendary',l:'mythic',sec:'secret'};
+const ACHS=[
+  {id:'a1',icon:'🌀',name:'first spin!',desc:'Spin the fan once',tier:'c',cat:'spins',thresh:()=>G.total>=1,prog:()=>Math.min(G.total,1),max:1},
+  {id:'a2',icon:'💨',name:'getting breezy',desc:'Reach 10 spins',tier:'c',cat:'spins',thresh:()=>G.total>=10,prog:()=>Math.min(G.total,10),max:10},
+  {id:'a3',icon:'🌬️',name:'spin streak',desc:'100 total spins',tier:'c',cat:'spins',thresh:()=>G.total>=100,prog:()=>Math.min(G.total,100),max:100},
+  {id:'a4',icon:'🌪️',name:'spinning spree',desc:'1,000 total spins',tier:'s',cat:'spins',thresh:()=>G.total>=1000,prog:()=>Math.min(G.total,1000),max:1000,reward:'+1% SPS'},
+  {id:'a5',icon:'⚡',name:'kilospin',desc:'10,000 total spins',tier:'s',cat:'spins',thresh:()=>G.total>=10000,prog:()=>Math.min(G.total,10000),max:10000,reward:'+2% SPS'},
+  {id:'a6',icon:'🔥',name:'megaspin',desc:'1,000,000 spins',tier:'g',cat:'spins',thresh:()=>G.total>=1e6,prog:()=>Math.min(G.total,1e6),max:1e6,reward:'+5% SPS'},
+  {id:'a7',icon:'🌟',name:'gigaspin',desc:'1 billion spins',tier:'g',cat:'spins',thresh:()=>G.total>=1e9,prog:()=>Math.min(G.total,1e9),max:1e9,reward:'+10% SPS'},
+  {id:'a8',icon:'💫',name:'teraspin',desc:'1 trillion spins',tier:'e',cat:'spins',thresh:()=>G.total>=1e12,prog:()=>Math.min(G.total,1e12),max:1e12,reward:'+25% SPS'},
+  {id:'a9',icon:'🪐',name:'petaspin',desc:'1 quadrillion spins',tier:'l',cat:'spins',thresh:()=>G.total>=1e15,prog:()=>Math.min(G.total,1e15),max:1e15,reward:'+50% SPS'},
+  {id:'a10',icon:'👆',name:'first click',desc:'Click the fan once',tier:'c',cat:'clicks',thresh:()=>G.clicks>=1,prog:()=>Math.min(G.clicks,1),max:1},
+  {id:'a11',icon:'✌️',name:'double tap',desc:'Click 10 times',tier:'c',cat:'clicks',thresh:()=>G.clicks>=10,prog:()=>Math.min(G.clicks,10),max:10},
+  {id:'a12',icon:'🖐️',name:'hundred hands',desc:'Click 100 times',tier:'c',cat:'clicks',thresh:()=>G.clicks>=100,prog:()=>Math.min(G.clicks,100),max:100},
+  {id:'a13',icon:'💪',name:'thousand taps',desc:'Click 1,000 times',tier:'s',cat:'clicks',thresh:()=>G.clicks>=1000,prog:()=>Math.min(G.clicks,1000),max:1000,reward:'+1 click power'},
+  {id:'a14',icon:'🤜',name:'ten thousand',desc:'Click 10,000 times',tier:'g',cat:'clicks',thresh:()=>G.clicks>=10000,prog:()=>Math.min(G.clicks,10000),max:10000,reward:'+3 click power'},
+  {id:'a15',icon:'🦾',name:'cyber clicker',desc:'Click 100,000 times',tier:'e',cat:'clicks',thresh:()=>G.clicks>=100000,prog:()=>Math.min(G.clicks,100000),max:100000,reward:'+10 click power'},
+  {id:'a16',icon:'🏠',name:'first building',desc:'Buy any building',tier:'c',cat:'bldg',thresh:()=>G.bldgs.reduce((s,b)=>s+b.count,0)>=1,prog:()=>Math.min(G.bldgs.reduce((s,b)=>s+b.count,0),1),max:1},
+  {id:'a17',icon:'🌀',name:'desk dweller',desc:'Own 5 desk fans',tier:'c',cat:'bldg',thresh:()=>cnt('desk')>=5,prog:()=>Math.min(cnt('desk'),5),max:5},
+  {id:'a18',icon:'📦',name:'box collector',desc:'Own 10 box fans',tier:'s',cat:'bldg',thresh:()=>cnt('box')>=10,prog:()=>Math.min(cnt('box'),10),max:10},
+  {id:'a19',icon:'🏗️',name:'fan army',desc:'Own 20 total buildings',tier:'s',cat:'bldg',thresh:()=>G.bldgs.reduce((s,b)=>s+b.count,0)>=20,prog:()=>Math.min(G.bldgs.reduce((s,b)=>s+b.count,0),20),max:20},
+  {id:'a20',icon:'🌪️',name:'tornado tamer',desc:'Buy a tornado',tier:'g',cat:'bldg',thresh:()=>cnt('tornado')>=1,prog:()=>Math.min(cnt('tornado'),1),max:1,reward:'+5% SPS'},
+  {id:'a21',icon:'🌌',name:'void walker',desc:'Buy the spin singularity',tier:'l',cat:'bldg',thresh:()=>cnt('singularity')>=1,prog:()=>Math.min(cnt('singularity'),1),max:1,reward:'+20% SPS'},
+  {id:'a22',icon:'✈️',name:'jet setter',desc:'Own a jet engine',tier:'g',cat:'bldg',thresh:()=>cnt('jet')>=1,prog:()=>Math.min(cnt('jet'),1),max:1},
+  {id:'a23',icon:'🌍',name:'atmosphere controller',desc:'Own an atmosphere reactor',tier:'e',cat:'bldg',thresh:()=>cnt('atmosphere')>=1,prog:()=>Math.min(cnt('atmosphere'),1),max:1},
+  {id:'a24',icon:'🔵',name:'flysom builder',desc:'Own the Flysom Fan Grid',tier:'e',cat:'bldg',thresh:()=>cnt('flysom')>=1,prog:()=>Math.min(cnt('flysom'),1),max:1},
+  {id:'a25',icon:'🛢️',name:'first upgrade',desc:'Buy any upgrade',tier:'c',cat:'upg',thresh:()=>G.boughtUpg.size>=1,prog:()=>Math.min(G.boughtUpg.size,1),max:1},
+  {id:'a26',icon:'📦',name:'upgrade hoarder',desc:'Own 5 upgrades',tier:'c',cat:'upg',thresh:()=>G.boughtUpg.size>=5,prog:()=>Math.min(G.boughtUpg.size,5),max:5},
+  {id:'a27',icon:'🏅',name:'upgrade addict',desc:'Own 10 upgrades',tier:'s',cat:'upg',thresh:()=>G.boughtUpg.size>=10,prog:()=>Math.min(G.boughtUpg.size,10),max:10},
+  {id:'a28',icon:'🏆',name:'upgrade master',desc:'Own 15 upgrades',tier:'g',cat:'upg',thresh:()=>G.boughtUpg.size>=15,prog:()=>Math.min(G.boughtUpg.size,15),max:15},
+  {id:'a29',icon:'🎯',name:'upgrade supremacy',desc:'Own 20 upgrades',tier:'e',cat:'upg',thresh:()=>G.boughtUpg.size>=20,prog:()=>Math.min(G.boughtUpg.size,20),max:20},
+  {id:'a30',icon:'🤖',name:'automation nation',desc:'Reach 1 spin/sec auto',tier:'c',cat:'sps',thresh:()=>G.sps>=1,prog:()=>Math.min(G.sps,1),max:1},
+  {id:'a31',icon:'⚡',name:'speed demon',desc:'100 spins/sec',tier:'s',cat:'sps',thresh:()=>G.sps>=100,prog:()=>Math.min(G.sps,100),max:100},
+  {id:'a32',icon:'🚀',name:'lightspeed',desc:'10,000 spins/sec',tier:'g',cat:'sps',thresh:()=>G.sps>=10000,prog:()=>Math.min(G.sps,10000),max:10000},
+  {id:'a33',icon:'🌌',name:'warp speed',desc:'1 million spins/sec',tier:'e',cat:'sps',thresh:()=>G.sps>=1e6,prog:()=>Math.min(G.sps,1e6),max:1e6},
+  {id:'a34',icon:'♾️',name:'infinite spin',desc:'1 billion spins/sec',tier:'l',cat:'sps',thresh:()=>G.sps>=1e9,prog:()=>Math.min(G.sps,1e9),max:1e9},
+  {id:'a35',icon:'☁️',name:'cloud poker',desc:'Click the clouds 10 times',tier:'sec',cat:'secret',thresh:()=>G.cloudClicks>=10,prog:()=>Math.min(G.cloudClicks,10),max:10,secret:true,reward:'Cloud cosmetic'},
+  {id:'a36',icon:'🌤️',name:'cloud addict',desc:'Click the clouds 100 times',tier:'sec',cat:'secret',thresh:()=>G.cloudClicks>=100,prog:()=>Math.min(G.cloudClicks,100),max:100,secret:true,reward:'Rain effect'},
+  {id:'a37',icon:'⛅',name:'sky obsessed',desc:'Click clouds 500 times... why?',tier:'sec',cat:'secret',thresh:()=>G.cloudClicks>=500,prog:()=>Math.min(G.cloudClicks,500),max:500,secret:true,reward:'+1% SPS forever'},
+  {id:'a38',icon:'📊',name:'stats nerd',desc:'Open the stats page 10 times',tier:'sec',cat:'secret',thresh:()=>G.statsOpens>=10,prog:()=>Math.min(G.statsOpens,10),max:10,secret:true},
+  {id:'a39',icon:'🎭',name:'definitely not addicted',desc:'Play for 30 minutes straight',tier:'sec',cat:'secret',thresh:()=>(Date.now()-G.startTime)>=1800000,prog:()=>Math.min(Date.now()-G.startTime,1800000),max:1800000,secret:true,reward:'Title: Fan Addict'},
+  {id:'a40',icon:'🏖️',name:'go outside',desc:'Play for 2 hours straight',tier:'sec',cat:'secret',thresh:()=>(Date.now()-G.startTime)>=7200000,prog:()=>Math.min(Date.now()-G.startTime,7200000),max:7200000,secret:true,reward:'Title: Needs Air'},
+  {id:'a41',icon:'🌑',name:'the fan is watching',desc:'Own the Corrupted Fan',tier:'sec',cat:'secret',thresh:()=>G.secretItems.has('corrupted_fan'),prog:()=>G.secretItems.has('corrupted_fan')?1:0,max:1,secret:true,reward:'Secret cosmetic'},
+  {id:'a42',icon:'👁️',name:'do not trust the fan',desc:'Own The Watcher',tier:'sec',cat:'secret',thresh:()=>G.secretItems.has('the_watcher'),prog:()=>G.secretItems.has('the_watcher')?1:0,max:1,secret:true,reward:'Spooky border'},
+  {id:'a43',icon:'✨',name:'air addiction',desc:'Reach 1,000 hand spins',tier:'s',cat:'clicks',thresh:()=>G.hand>=1000,prog:()=>Math.min(G.hand,1000),max:1000},
+  {id:'a44',icon:'🤷',name:'why the clouds?',desc:'Click clouds 50 times',tier:'sec',cat:'secret',thresh:()=>G.cloudClicks>=50,prog:()=>Math.min(G.cloudClicks,50),max:50,secret:true},
+  {id:'a45',icon:'🌊',name:'hurricane hunter',desc:'Own a hurricane engine',tier:'g',cat:'bldg',thresh:()=>cnt('hurricane')>=1,prog:()=>Math.min(cnt('hurricane'),1),max:1},
+  {id:'a46',icon:'💧',name:'hydro power',desc:'Own a hydro turbine',tier:'s',cat:'bldg',thresh:()=>cnt('hydro')>=1,prog:()=>Math.min(cnt('hydro'),1),max:1},
+  {id:'a47',icon:'🪐',name:'planetary spin',desc:'Own a planet spinner',tier:'e',cat:'bldg',thresh:()=>cnt('planet')>=1,prog:()=>Math.min(cnt('planet'),1),max:1},
+  {id:'a48',icon:'💸',name:'big spender',desc:'Earn 1 million total spins',tier:'g',cat:'spins',thresh:()=>G.total>=1e6,prog:()=>Math.min(G.total,1e6),max:1e6},
+  {id:'a49',icon:'🔌',name:'usb powered',desc:'Own 10 USB fans',tier:'s',cat:'bldg',thresh:()=>cnt('usb')>=10,prog:()=>Math.min(cnt('usb'),10),max:10},
+  {id:'a50',icon:'💨',name:'hair raiser',desc:'Own 5 hair dryers',tier:'c',cat:'bldg',thresh:()=>cnt('hairdryer')>=5,prog:()=>Math.min(cnt('hairdryer'),5),max:5},
+];
+
+const NEWS=['"area fan wins best supporting appliance"','"experts: more spins = more better"','"local turbine retires after 8 billion spins"','"ceiling fan achieves sentience, stays cool"','"grandma powers neighbourhood with hand spins"','"fan clicker ranked most relaxing game ever"','"scientists baffled: fan refuses to stop spinning"','"flysom grid declared most powerful fan formation"','"air quality improves: no one knows why"'];
+const CREEPY=['"do not trust the fan"','"it is always watching"','"the blades remember you"','"every spin feeds it"','"air has memory. yours is long"'];
+
+function recalc(){
+  G.sps=G.bldgs.reduce((s,b)=>s+b.count*b.bsps*b.mult,0);
+  for(const id of G.secretItems){if(SECRETS[id])G.sps+=SECRETS[id].sps}
+}
+function bldgCost(b){return Math.floor(b.base*Math.pow(1.15,b.count))}
+function buyBldg(i){
+  const b=G.bldgs[i];const c=bldgCost(b);
+  if(G.spins<c)return;G.spins-=c;b.count++;recalc();renderShop();checkAchs();
+}
+function buyUpg(u){
+  if(G.boughtUpg.has(u.id)||G.spins<u.cost)return;
+  G.spins-=u.cost;u.apply();G.boughtUpg.add(u.id);renderUpgs();renderShop();checkAchs();
+}
+
+// ── SKY CANVAS ──
+const SKY=$('SKYBG'),skCtx=SKY.getContext('2d');
+const LP=$('LP');
+function resizeSky(){SKY.width=LP.offsetWidth||280;SKY.height=LP.offsetHeight||680}
+resizeSky();
+
+const CLOUD_ZONES=[];
+function drawSky(){
+  const W=SKY.width,H=SKY.height,PX=4;
+  const GW=Math.ceil(W/PX),GH=Math.ceil(H/PX);
+  const pal=['#5ba3e8','#6ab4f0','#7ac0f5','#8acbf7','#9ad4f9','#5b9fe0','#4d94d8'];
+  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){
+    skCtx.fillStyle=pal[Math.min(Math.floor(y/GH*(pal.length-1)),pal.length-1)];
+    skCtx.fillRect(x*PX,y*PX,PX,PX);
+  }
+  CLOUD_ZONES.length=0;
+  const CLD=[
+    {x:2,y:5,w:16,h:7},{x:32,y:12,w:14,h:6},{x:18,y:30,w:18,h:8},
+    {x:4,y:42,w:14,h:6},{x:36,y:38,w:12,h:5},{x:22,y:58,w:16,h:7},
+    {x:6,y:68,w:14,h:6},{x:38,y:62,w:12,h:5},{x:2,y:80,w:16,h:7},
+    {x:26,y:88,w:18,h:8},{x:12,y:98,w:14,h:6},{x:40,y:78,w:12,h:5},
+    {x:4,y:110,w:16,h:7},{x:34,y:105,w:14,h:6},{x:18,y:120,w:12,h:5},
+  ];
+  CLD.forEach(cl=>{
+    for(let py=0;py<cl.h;py++)for(let px=0;px<cl.w;px++){
+      const eL=px<cl.w*.15,eR=px>cl.w*.85,inT=py<cl.h*.4;
+      skCtx.fillStyle=py>cl.h*.7?'#c8e4ff':(inT&&(eL||eR)?'#d8eeff':'#ffffff');
+      skCtx.fillRect((cl.x+px)*PX,(cl.y+py)*PX,PX,PX);
+    }
+    skCtx.fillStyle='#b8d8f8';
+    for(let px=1;px<cl.w-1;px++)skCtx.fillRect((cl.x+px)*PX,(cl.y+cl.h)*PX,PX,PX);
+    CLOUD_ZONES.push({x:cl.x*PX,y:cl.y*PX,w:cl.w*PX,h:(cl.h+1)*PX});
+  });
+}
+drawSky();
+
+// Cloud click
+LP.addEventListener('click',function(e){
+  const r=this.getBoundingClientRect();
+  const lx=e.clientX-r.left,ly=e.clientY-r.top;
+  for(const cz of CLOUD_ZONES){
+    if(lx>=cz.x&&lx<=cz.x+cz.w&&ly>=cz.y&&ly<=cz.y+cz.h){
+      G.cloudClicks++;
+      floatTxt(lx-10,ly-10,'☁+1',LP);
+      checkAchs();break;
+    }
+  }
+});
+
+// ── FAN CANVAS ──
+const fanCanvas=$('fanC'),fCtx=fanCanvas.getContext('2d');
+const PS=4;
+function drawFan(angle,spd){
+  fCtx.clearRect(0,0,160,160);
+  const GS=Math.ceil(160/PS),cx=Math.floor(GS/2),cy=Math.floor(GS/2);
+  const grid=new Uint32Array(GS*GS);
+  const set=(gx,gy,c)=>{if(gx>=0&&gx<GS&&gy>=0&&gy<GS)grid[gy*GS+gx]=c};
+  const h2i=h=>{const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return(r<<16)|(g<<8)|b|0xff000000>>>0};
+  const i2c=i=>`rgb(${(i>>16)&0xff},${(i>>8)&0xff},${i&0xff})`;
+  const BC=h2i('#c8934a'),BD=h2i('#a06828'),BH=h2i('#e0b070'),HC=h2i('#e8dcc8'),HD=h2i('#b8a888'),LC=h2i('#f0e8d0'),LG=h2i('#fffae8'),SW=h2i('#888878'),PC=h2i('#d0c4a8');
+  for(let i=0;i<4;i++){
+    const a=angle+(Math.PI/2)*i;
+    for(let d=2;d<=10;d++)for(let w=-3;w<=3;w++){
+      const nx=Math.round(cx+Math.cos(a)*d-Math.sin(a)*w*.4),ny=Math.round(cy+Math.sin(a)*d+Math.cos(a)*w*.4);
+      set(nx,ny,(Math.abs(w)===3||d>=10)?BD:(w<0?BH:BC));
+    }
+  }
+  for(let py=-2;py<=2;py++)for(let px=-2;px<=2;px++){if(Math.abs(px)+Math.abs(py)<=3)set(cx+px,cy+py,px===0&&py===0?LG:(px<0||py<0?HC:HD))}
+  for(let d=0;d<=2;d++)set(cx,cy-12-d,PC);
+  for(let py=-1;py<=2;py++)for(let px=-2;px<=2;px++){if(Math.sqrt(px*px+py*py)<=2.1)set(cx+px,cy+5+py,py<0?LC:LG)}
+  [[cx-2,cy-2],[cx+2,cy-2],[cx+2,cy+2],[cx-2,cy+2]].forEach(([sx,sy])=>set(sx,sy,SW));
+  for(let gy=0;gy<GS;gy++)for(let gx=0;gx<GS;gx++){const c=grid[gy*GS+gx];if(c){fCtx.fillStyle=i2c(c);fCtx.fillRect(gx*PS,gy*PS,PS,PS)}}
+  if(spd>5){fCtx.globalAlpha=Math.min(spd/40,.3);for(let r=40;r>16;r-=8){fCtx.strokeStyle='#5ba3e8';fCtx.lineWidth=2;fCtx.beginPath();fCtx.arc(80,80,r,0,Math.PI*2);fCtx.stroke()}fCtx.globalAlpha=1}
+}
+
+// ── FAN CLICK ──
+$('FC').addEventListener('click',function(e){
+  const gain=G.clickPow;G.spins+=gain;G.total+=gain;G.hand+=gain;G.clicks++;
+  G.speed=Math.min(G.speed+6,35);
+  const r=this.getBoundingClientRect();
+  floatTxt(e.clientX-r.left-10,e.clientY-r.top-10,'+'+fmt(gain),this);
+  spawnPx(e.clientX-$('G').getBoundingClientRect().left,e.clientY-$('G').getBoundingClientRect().top);
+  checkAchs();
+});
+
+// ── FLOAT TEXT ──
+function floatTxt(x,y,txt,container){
+  const e=document.createElement('div');e.className='ftxt';e.textContent=txt;
+  e.style.cssText=`left:${x}px;top:${y}px`;
+  container.style.position='relative';container.appendChild(e);
+  setTimeout(()=>e.remove(),800);
+}
+function spawnPx(x,y){
+  const cols=['#4a90d9','#f0a020','#34d399','#f472b6','#ffd060'];
+  for(let i=0;i<8;i++){
+    const p=document.createElement('div');p.className='px';
+    p.style.cssText=`left:${x-20+Math.random()*40}px;top:${y-20+Math.random()*40}px;background:${cols[i%5]};animation-delay:${Math.random()*.3}s`;
+    $('PIXBG').appendChild(p);setTimeout(()=>p.remove(),1100);
+  }
+}
+function confetti(n){
+  for(let i=0;i<n;i++){
+    const p=document.createElement('div');p.className='px';
+    p.style.cssText=`left:${100+Math.random()*700}px;top:${80+Math.random()*400}px;background:${'#f0a020,#4a90d9,#34d399,#f472b6,#ffd060'.split(',')[i%5]};width:6px;height:6px;animation-delay:${Math.random()*.5}s`;
+    $('PIXBG').appendChild(p);setTimeout(()=>p.remove(),1500);
+  }
+}
+
+// ── SHOP ──
+function shopState(b){
+  if(b.count>0)return 'buy';
+  const r=G.spins/bldgCost(b);
+  if(r>=1)return 'buy';
+  if(r>=0.5)return 'almost';
+  if(r>=0.1)return 'sil';
+  return 'hide';
+}
+function renderShop(){
+  const scr=$('SHOPSCROLL');scr.innerHTML='';
+  let tier='';
+  G.bldgs.forEach((b,i)=>{
+    const st=shopState(b);
+    if(st==='hide')return;
+    const c=bldgCost(b);
+    const can=G.spins>=c;
+    if(b.tier!==tier){
+      tier=b.tier;
+      const th=document.createElement('div');th.className='tier-hdr';
+      th.textContent={early:'◆ early game',mid:'◆ mid game',late:'◆ late game'}[b.tier];
+      scr.appendChild(th);
+    }
+    const el=document.createElement('div');
+    const isSil=st==='sil';
+    const isAlmost=st==='almost'&&b.count===0;
+    el.className='si'+(can&&!isSil?' aff':'')+(isSil?' sil':'');
+    let nm,dc,ct;
+    if(isSil){nm='<span style="color:#777">??? ??? ???</span>';dc='<span style="color:#aaa">Keep spinning to reveal...</span>';ct='<span style="color:#777">???</span>'}
+    else if(isAlmost){nm=`<span style="color:#4a5a7e">... ${b.name.split(' ').slice(-1)[0]}?</span>`;dc='<span style="color:#4a70ae">Getting closer!</span>';ct=`<span class="si-cost">${fmt(c)}</span>`}
+    else{nm=`<span class="si-name">${b.name}</span>`;dc=`<span class="si-desc">${b.desc}</span>`;ct=`<span class="si-cost">${fmt(c)}</span>`}
+    const sps=(b.bsps*b.mult).toFixed(b.bsps*b.mult<1?2:1);
+    el.innerHTML=`
+      <div class="si-icon-box${isSil?' dark':''}"><span class="si-icon">${b.icon}</span></div>
+      <div class="sinf" style="flex:1;min-width:0">
+        <div style="margin-bottom:2px">${nm}</div>
+        <div style="margin-bottom:3px">${dc}</div>
+        <div class="si-bot">
+          <span class="si-cnt">${b.count>0?'x'+b.count:''}</span>
+          <span class="si-sps">${!isSil?sps+'/s ea':''}</span>
+        </div>
+      </div>
+      <div class="si-right">${ct}<div class="si-costsub">${!isSil?'spins':''}</div></div>`;
+    if(!isSil)el.addEventListener('click',()=>buyBldg(i));
+    el.addEventListener('mouseenter',ev=>{if(!isSil)showTip(ev,b.name,b.desc+'\n'+sps+' spin/sec each')});
+    el.addEventListener('mouseleave',hideTip);
+    scr.appendChild(el);
+  });
+}
+
+function renderUpgs(){
+  const row=$('UPGROW');row.innerHTML='';
+  UPGS.forEach(u=>{
+    if(!u.req()&&!G.boughtUpg.has(u.id))return;
+    const bought=G.boughtUpg.has(u.id);
+    const chip=document.createElement('div');chip.className='uchip'+(bought?' bought':'');chip.textContent=u.icon;
+    chip.addEventListener('mouseenter',ev=>showTip(ev,u.name,u.desc+'\nCost: '+fmt(u.cost)+(bought?' ✓':'')+(G.boughtUpg.has(u.id)?'':'\nAffordable: '+(G.spins>=u.cost?'Yes':'No'))));
+    chip.addEventListener('mouseleave',hideTip);
+    if(!bought)chip.addEventListener('click',()=>buyUpg(u));
+    row.appendChild(chip);
+  });
+  $('SUP').textContent=G.boughtUpg.size;
+}
+
+// ── ACHIEVEMENTS ──
+function checkAchs(){
+  ACHS.forEach(a=>{
+    if(!G.boughtAch.has(a.id)&&a.thresh()){
+      G.boughtAch.add(a.id);G.newAch++;
+      showAchPopup(a);checkFanRewards();
+    }
+  });
+  $('SACH').textContent=G.boughtAch.size+'/'+ACHS.length;
+  $('ACHBADGE').textContent=G.newAch;
+}
+function checkFanRewards(){
+  const c=G.boughtAch.size;
+  FAN_REWARDS.forEach(f=>{
+    const key='fr_'+f.at;
+    if(c>=f.at&&!G.boughtAch.has(key)){G.boughtAch.add(key);G.fansEarned.push(f);showFanReward(f)}
+  });
+}
+function showFanReward(f){
+  $('FR-ICON').textContent=f.icon;$('FR-NAME').textContent=f.name;$('FR-DESC').textContent=f.desc;
+  $('FANREWARD').classList.add('show');confetti(24);
+  setTimeout(()=>$('FANREWARD').classList.remove('show'),4000);
+}
+function showAchPopup(a){
+  const col=TC[a.tier]||'#888';
+  $('POPIC').textContent=a.icon;$('POPTIT').style.color=col;
+  $('POPNAME').textContent=a.name;$('POPDESC').textContent=a.desc;
+  $('POPREWARD').textContent=a.reward?'✦ reward: '+a.reward:'';
+  const pop=$('POPUP');pop.style.borderColor=col;pop.classList.add('show');confetti(10);
+  setTimeout(()=>pop.classList.remove('show'),2500);
+}
+
+// ── STAT PANEL ──
+function fmtT(ms){const s=Math.floor(ms/1000);if(s<60)return s+'s';if(s<3600)return Math.floor(s/60)+'m '+(s%60)+'s';return Math.floor(s/3600)+'h '+Math.floor((s%3600)/60)+'m'}
+function renderStats(){
+  const sc=$('STATSCROLL');sc.innerHTML='';
+  function sec(t){const h=document.createElement('div');h.className='st-sec';h.textContent=t;sc.appendChild(h)}
+  function row(l,v,c=''){const d=document.createElement('div');d.className='st-row';d.innerHTML=`<span>${l}:</span><span class="st-val ${c}">${v}</span>`;sc.appendChild(d)}
+  function div(){const d=document.createElement('div');d.style.cssText='height:1px;background:#2a1a08;margin:4px 0';sc.appendChild(d)}
+  sec('General');
+  row('Spins in bank',fmt(G.spins),'gold');row('Total spins ever',fmt(G.total),'gold');
+  row('Spins by hand',fmt(G.hand),'gold');row('Automated spins',fmt(Math.floor(G.auto)),'gold');div();
+  row('Session time',fmtT(Date.now()-G.startTime));row('Fan clicks',G.clicks.toLocaleString());
+  row('Cloud clicks',G.cloudClicks.toLocaleString());row('Stats opens',G.statsOpens.toLocaleString());
+  row('Buildings owned',G.bldgs.reduce((s,b)=>s+b.count,0).toLocaleString());
+  row('Upgrades bought',G.boughtUpg.size+' / '+UPGS.length);
+  row('Achievements',G.boughtAch.size+' / '+ACHS.length);row('Fan name',G.fanName);div();
+  row('Spins per second',fmtF(G.sps)+'/sec','green');row('Spins per click',fmt(G.clickPow),'green');
+  row('Fans earned',G.fansEarned.length.toString(),'blue');row('Secret items',G.secretItems.size.toString(),'blue');
+  sec('Buildings');
+  G.bldgs.forEach(b=>{
+    const r=document.createElement('div');r.className='brow';
+    r.innerHTML=`<div class="brow-icon">${b.icon}</div><div style="flex:1"><div class="brow-name">${b.name}</div><div class="brow-sub">${b.count>0?fmtF(b.bsps*b.mult*b.count)+'/sec'+(b.mult>1?' (x'+b.mult.toFixed(1)+')':''):'-'}</div></div><div class="brow-cnt">${b.count}</div>`;
+    sc.appendChild(r);
+  });
+  sec('Fans Earned');
+  if(!G.fansEarned.length){const e=document.createElement('div');e.style.cssText='font-size:5px;color:#5a4a30;margin-bottom:6px';e.textContent='Unlock 25 achievements to earn your first fan!';sc.appendChild(e)}
+  const fg=document.createElement('div');fg.style.cssText='display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px';
+  G.fansEarned.forEach(f=>{
+    const chip=document.createElement('div');chip.className='fan-chip earned';
+    chip.innerHTML=`<span>${f.icon}</span><span class="fan-chip-lbl" style="color:#ffd060">${f.at}</span>`;
+    chip.addEventListener('mouseenter',ev=>showTip(ev,f.name,f.desc));chip.addEventListener('mouseleave',hideTip);
+    fg.appendChild(chip);
+  });
+  sc.appendChild(fg);
+}
+
+// ── ACH PANEL ──
+function renderAchs(){
+  const sc=$('ACHSCROLL');sc.innerHTML='';
+  const cats={spins:'Spin Milestones',clicks:'Click Achievements',bldg:'Buildings',upg:'Upgrades',sps:'Speed',secret:'🔐 Secrets'};
+  Object.entries(cats).forEach(([cat,label])=>{
+    const arr=ACHS.filter(a=>a.cat===cat);
+    const u=arr.filter(a=>G.boughtAch.has(a.id)).length;
+    const sec=document.createElement('div');sec.className='ach-sec';sec.textContent=label+' ('+u+'/'+arr.length+')';sc.appendChild(sec);
+    const wrap=document.createElement('div');
+    arr.forEach(a=>{
+      const unlocked=G.boughtAch.has(a.id);const col=TC[a.tier];
+      const pct=Math.min((a.prog()/a.max)*100,100);
+      const isHidden=a.secret&&!unlocked;
+      const row=document.createElement('div');row.className='ap-row';
+      row.innerHTML=`
+        <div class="ap-icon" style="${!unlocked?'filter:grayscale(1);opacity:.4':''}">${isHidden?'❓':a.icon}</div>
+        <div style="flex:1;min-width:0">
+          <div class="ap-name" style="color:${unlocked?col:'#5a4a30'}">${isHidden?'??? Secret Achievement':a.name}</div>
+          <div class="ap-desc">${isHidden?'Keep playing...':a.desc}${a.reward&&unlocked?' · ✦ '+a.reward:''}</div>
+          <div class="ap-bar"><div class="ap-fill" style="width:${pct}%;background:${col}"></div></div>
+        </div>
+        <div class="ap-tier" style="color:${col}">${TN[a.tier]}</div>`;
+      row.addEventListener('mouseenter',ev=>{if(!isHidden)showTip(ev,a.name,a.desc+(a.reward?'\n✦ Reward: '+a.reward:''))});
+      row.addEventListener('mouseleave',hideTip);
+      wrap.appendChild(row);
+    });
+    sc.appendChild(wrap);
+  });
+  // Fan reward grid
+  const fsec=document.createElement('div');fsec.className='ach-sec';fsec.textContent='🌀 Fan Rewards (every 25 achievements)';sc.appendChild(fsec);
+  const fg=document.createElement('div');fg.style.cssText='display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px';
+  FAN_REWARDS.forEach(f=>{
+    const earned=G.fansEarned.find(x=>x.at===f.at);
+    const chip=document.createElement('div');chip.className='fan-chip'+(earned?' earned':'');
+    chip.innerHTML=`<span>${earned?f.icon:'❓'}</span><span class="fan-chip-lbl" style="color:${earned?'#ffd060':'#3a2a10'}">${f.at}</span>`;
+    chip.addEventListener('mouseenter',ev=>showTip(ev,earned?f.name:'Locked Fan',earned?f.desc:'Unlock '+f.at+' achievements'));
+    chip.addEventListener('mouseleave',hideTip);
+    fg.appendChild(chip);
+  });
+  sc.appendChild(fg);
+}
+
+// ── FAN NAMING ──
+$('FANNAME-DISPLAY').addEventListener('click',()=>{$('NAMINP').value=G.fanName;$('NAM-MSG').textContent='';$('NAMEMODAL').classList.add('show');setTimeout(()=>$('NAMINP').focus(),100)});
+$('NAM-CANCEL').addEventListener('click',()=>$('NAMEMODAL').classList.remove('show'));
+$('NAM-CONFIRM').addEventListener('click',confirmName);
+$('NAMINP').addEventListener('keydown',e=>{if(e.key==='Enter')confirmName()});
+function confirmName(){
+  const n=$('NAMINP').value.trim();
+  if(n.length<2){$('NAM-MSG').textContent='Too short!';return}
+  if(n.length>20){$('NAM-MSG').textContent='Max 20 chars!';return}
+  if(TAKEN.has(n)&&n!==G.fanName){$('NAM-MSG').textContent='Name already taken!';return}
+  TAKEN.delete(G.fanName);TAKEN.add(n);G.fanName=n;
+  $('FANNAME-DISPLAY').textContent='🌀 '+n;$('NAMEMODAL').classList.remove('show');
+}
+
+// ── ADMIN ──
+const ADMIN_PW='fanmaster2026';
+let adminSeq='';
+document.addEventListener('keydown',e=>{
+  adminSeq=(adminSeq+e.key).slice(-5).toUpperCase();
+  if(adminSeq==='ADMIN'){adminSeq='';$('ADMINLOGIN').classList.add('show');$('ADMIN-PW-INP').value='';$('ADMIN-PW-MSG').textContent='';setTimeout(()=>$('ADMIN-PW-INP').focus(),100)}
+});
+function checkAdminPw(){
+  if($('ADMIN-PW-INP').value===ADMIN_PW){$('ADMINLOGIN').classList.remove('show');$('ADMINPANEL').classList.add('open');renderAdminAnalytics()}
+  else{$('ADMIN-PW-MSG').textContent='Wrong password.';$('ADMIN-PW-INP').value=''}
+}
+$('ADMIN-PW-INP').addEventListener('keydown',e=>{if(e.key==='Enter')checkAdminPw()});
+$('ADMINCLOSE').addEventListener('click',()=>$('ADMINPANEL').classList.remove('open'));
+function adMsg(id,msg,ok=true){const e=$(id);e.textContent=msg;e.style.color=ok?'#00ff88':'#ff4444';setTimeout(()=>e.textContent='',3000)}
+function adminGiveSpins(){const n=$('adm-fan-name').value.trim(),a=parseInt($('adm-spin-amt').value);if(n!==G.fanName){adMsg('adm-spin-msg','Fan not found!',false);return}if(!a||a<=0){adMsg('adm-spin-msg','Invalid amount!',false);return}G.spins+=a;G.total+=a;adMsg('adm-spin-msg','✓ Gave '+fmt(a)+' spins to '+n)}
+function adminGiveSecret(){const n=$('adm-secret-fan').value.trim(),item=$('adm-secret-item').value;if(n!==G.fanName){adMsg('adm-secret-msg','Fan not found!',false);return}G.secretItems.add(item);recalc();adMsg('adm-secret-msg','✓ Gave '+SECRETS[item].name+' to '+n);checkAchs()}
+function adminSetSpins(){const v=parseInt($('adm-set-spins').value);if(isNaN(v)){adMsg('adm-eco-msg','Invalid!',false);return}G.spins=v;adMsg('adm-eco-msg','✓ Set to '+fmt(v))}
+function adminSetMult(){const v=parseFloat($('adm-mult').value);if(isNaN(v)||v<=0){adMsg('adm-eco-msg','Invalid!',false);return}G.bldgs.forEach(b=>b.mult*=v);recalc();adMsg('adm-eco-msg','✓ All SPS x'+v)}
+function adminSetNews(){const m=$('adm-news').value.trim();if(m){$('TICKER').textContent='📢 '+m;$('adm-news').value=''}}
+function adminForceAch(){const id=$('adm-ach-id').value.trim();const a=ACHS.find(x=>x.id===id);if(!a){adMsg('adm-ach-msg','Not found!',false);return}if(G.boughtAch.has(id)){adMsg('adm-ach-msg','Already unlocked',false);return}G.boughtAch.add(id);G.newAch++;showAchPopup(a);checkFanRewards();adMsg('adm-ach-msg','✓ Unlocked '+a.name)}
+function adminReset(){if(confirm('Reset ALL progress?'))location.reload()}
+function adminUnlockAll(){ACHS.forEach(a=>{if(!G.boughtAch.has(a.id)){G.boughtAch.add(a.id);G.newAch++}});checkFanRewards();adMsg('adm-ach-msg','✓ All achievements unlocked')}
+function renderAdminAnalytics(){
+  $('ADM-ANALYTICS').innerHTML=`Session: ${fmtT(Date.now()-G.startTime)}<br>Total spins: ${fmt(G.total)}<br>SPS: ${fmtF(G.sps)}<br>Click power: x${G.clickPow}<br>Achievements: ${G.boughtAch.size}/${ACHS.length}<br>Buildings: ${G.bldgs.reduce((s,b)=>s+b.count,0)}<br>Upgrades: ${G.boughtUpg.size}<br>Cloud clicks: ${G.cloudClicks}<br>Fan name: "${G.fanName}"<br>Secret items: ${[...G.secretItems].join(', ')||'none'}<br>Fans earned: ${G.fansEarned.length}`;
+}
+
+// ── PANEL BUTTONS ──
+$('STATBTN').addEventListener('click',()=>{G.statsOpens++;renderStats();$('STATPANEL').classList.add('open')});
+$('STATCLOSE').addEventListener('click',()=>$('STATPANEL').classList.remove('open'));
+$('ACHBTN').addEventListener('click',()=>{G.newAch=0;$('ACHBADGE').textContent='0';renderAchs();$('ACHPANEL').classList.add('open')});
+$('ACHCLOSE').addEventListener('click',()=>$('ACHPANEL').classList.remove('open'));
+
+// ── TOOLTIP ──
+const TIP=$('TIP');
+function showTip(e,title,body){TIP.style.display='block';TIP.innerHTML=`<div style="color:#f0c040;margin-bottom:3px">${title}</div>${body.replace(/\n/g,'<br>')}`;moveTip(e)}
+function moveTip(e){TIP.style.left=(e.clientX+12)+'px';TIP.style.top=(e.clientY+12)+'px'}
+document.addEventListener('mousemove',e=>{if(TIP.style.display==='block')moveTip(e)});
+function hideTip(){TIP.style.display='none'}
+
+// ── GAME LOOP ──
+let lastT=null;
+const NEWS_ARR=NEWS.slice();
+function tick(ts){
+  if(!lastT)lastT=ts;
+  const dt=Math.min((ts-lastT)/1000,.1);lastT=ts;
+  const gained=G.sps*dt;G.spins+=gained;G.total+=gained;G.auto+=gained;
+  G.speed=Math.max(0,G.speed-dt*5);
+  const aSpd=Math.min(G.sps/5,35);
+  G.angle+=dt*(G.speed+aSpd);
+  drawFan(G.angle,G.speed+aSpd);
+  $('SPINS').textContent=fmt(G.spins);
+  $('SPS').textContent=fmt(G.sps)+' spins/sec';
+  $('SE').textContent=fmt(G.total);
+  $('SH').textContent=fmt(G.hand);
+  $('SA').textContent=fmt(G.auto);
+  G.newsT+=dt;
+  if(G.newsT>10){
+    G.newsT=0;G.newsI=(G.newsI+1)%NEWS_ARR.length;
+    $('TICKER').textContent=(G.secretItems.has('the_watcher')&&Math.random()<.3)?'📺 '+CREEPY[Math.floor(Math.random()*CREEPY.length)]:'📰 '+NEWS_ARR[G.newsI];
+  }
+  checkAchs();renderShop();
+  requestAnimationFrame(tick);
+}
+
+renderShop();renderUpgs();drawFan(0,0);
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
+HTMLEOF
+echo "done"
