@@ -3,15 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Cinzel:wght@700&display=swap" rel="stylesheet">
 <title>Fan Clicker</title>
 <style>
-/* fonts loaded via <link> tags */
+
 *{box-sizing:border-box;margin:0;padding:0;image-rendering:pixelated}
-body{background:#0d0d1a;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Press Start 2P','Courier New',Courier,monospace}
-#G{display:flex;width:min(980px,100vw);height:min(680px,100vh);border:4px solid #4a90d9;position:relative;overflow:hidden}
+body{background:#0d0d1a;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Courier New',Courier,monospace}
+#G{display:flex;width:980px;height:680px;border:4px solid #4a90d9;position:relative;overflow:hidden}
 
 /* ── LEFT PANEL ── */
 #LP{width:280px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;border-right:4px solid #4a90d9;position:relative;overflow:hidden;gap:0}
@@ -19,40 +16,40 @@ body{background:#0d0d1a;display:flex;align-items:center;justify-content:center;m
 #LP>*{position:relative;z-index:1;width:100%}
 
 #TOP-INFO{display:flex;flex-direction:column;align-items:center;padding:6px 6px 0;gap:3px}
-.lbl{font-size:5px;color:#1a3a6e;background:#ffffffbb;padding:2px 6px;border:2px solid #4a90d9;text-align:center;width:fit-content;align-self:center}
-#SPINS{font-size:12px;color:#0a2a5e;background:#ffffffdd;padding:3px 10px;border:3px solid #4a90d9;text-align:center;align-self:center}
-#SPS{font-size:5px;color:#0a4a2e;background:#c8f0d8dd;padding:2px 6px;border:2px solid #2a8a4e;align-self:center}
-#FANNAME-DISPLAY{font-size:5px;color:#0a2a5e;background:#ffffffbb;padding:2px 6px;border:2px solid #aac8e0;cursor:pointer;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.lbl{font-size:10px;color:#1a3a6e;background:#ffffffbb;padding:2px 6px;border:2px solid #4a90d9;text-align:center;width:fit-content;align-self:center}
+#SPINS{font-size:16px;color:#0a2a5e;background:#ffffffdd;padding:3px 10px;border:3px solid #4a90d9;text-align:center;align-self:center}
+#SPS{font-size:10px;color:#0a4a2e;background:#c8f0d8dd;padding:2px 6px;border:2px solid #2a8a4e;align-self:center}
+#FANNAME-DISPLAY{font-size:10px;color:#0a2a5e;background:#ffffffbb;padding:2px 6px;border:2px solid #aac8e0;cursor:pointer;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 
 #FC{width:160px;height:160px;flex-shrink:0;cursor:pointer;align-self:center;margin:4px auto}
 #fanC{display:block}
 
-#TICKER{font-size:5px;color:#0a2a5e;background:#ffffffcc;border-top:2px solid #4a90d9;border-bottom:2px solid #4a90d9;padding:3px 6px;overflow:hidden;white-space:nowrap;flex-shrink:0}
+#TICKER{font-size:10px;color:#0a2a5e;background:#ffffffcc;border-top:2px solid #4a90d9;border-bottom:2px solid #4a90d9;padding:3px 6px;overflow:hidden;white-space:nowrap;flex-shrink:0}
 
-#SBOX{background:#ffffffaa;border-top:2px solid #4a90d9;padding:4px 8px;font-size:5px;flex-shrink:0}
+#SBOX{background:#ffffffaa;border-top:2px solid #4a90d9;padding:4px 8px;font-size:10px;flex-shrink:0}
 .srow{display:flex;justify-content:space-between;margin-bottom:2px;color:#1a3a6e}
 .sv{color:#0a2a8e}
 
 #BOT-BTNS{display:flex;gap:0;flex-shrink:0}
-.lbtn{flex:1;background:#ffffffcc;border:0;border-top:2px solid #4a90d9;padding:4px 2px;font-size:5px;color:#0a2a6e;cursor:pointer;font-family:'Press Start 2P','Courier New',monospace;text-align:center;border-right:1px solid #4a90d9}
+.lbtn{flex:1;background:#ffffffcc;border:0;border-top:2px solid #4a90d9;padding:4px 2px;font-size:10px;color:#0a2a6e;cursor:pointer;font-family:'Courier New',Courier,monospace;text-align:center;border-right:1px solid #4a90d9}
 .lbtn:last-child{border-right:0}
 .lbtn:hover{background:#fff8e0;color:#a05000}
 
 /* ── RIGHT PANEL ── */
 #RP{flex:1;display:flex;flex-direction:column;background:#e8f4ff;overflow:hidden}
-#UPGROW-HDR{background:#b0d4f0;border-bottom:3px solid #4a90d9;padding:4px 8px;font-size:6px;color:#0a2a6e;flex-shrink:0}
+#UPGROW-HDR{background:#b0d4f0;border-bottom:3px solid #4a90d9;padding:4px 8px;font-size:11px;color:#0a2a6e;flex-shrink:0}
 #UPGROW{display:flex;gap:3px;padding:4px 6px;flex-wrap:wrap;border-bottom:3px solid #4a90d9;min-height:46px;background:#cce4f8;flex-shrink:0}
 .uchip{width:36px;height:36px;background:#fff;border:3px solid #4a90d9;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;flex-shrink:0}
 .uchip:hover{border-color:#f0a020;background:#fff8e0}
 .uchip.bought{opacity:.3;cursor:default;border-color:#aac8e0}
-#SHOPHDR{background:#a8ccec;border-bottom:3px solid #4a90d9;padding:5px 10px;font-size:8px;color:#0a2a6e;flex-shrink:0;display:flex;justify-content:space-between;align-items:center}
+#SHOPHDR{background:#a8ccec;border-bottom:3px solid #4a90d9;padding:5px 10px;font-size:13px;color:#0a2a6e;flex-shrink:0;display:flex;justify-content:space-between;align-items:center}
 #SHOPSCROLL{overflow-y:auto;flex:1;padding:4px 6px;background:#e8f4ff}
 #SHOPSCROLL::-webkit-scrollbar{width:6px}
 #SHOPSCROLL::-webkit-scrollbar-thumb{background:#4a90d9}
 #SHOPSCROLL::-webkit-scrollbar-track{background:#c8e0f8}
 
 /* Shop items */
-.tier-hdr{font-size:6px;background:#1a3a6e;color:#e8f4ff;padding:4px 8px;margin:4px 0 3px;letter-spacing:1px}
+.tier-hdr{font-size:11px;background:#1a3a6e;color:#e8f4ff;padding:4px 8px;margin:4px 0 3px;letter-spacing:1px}
 .si{display:flex;align-items:center;background:#fff;border:3px solid #c0d8ee;margin-bottom:4px;padding:5px 6px;cursor:pointer;gap:6px}
 .si:hover{border-color:#4a90d9}
 .si.aff{border-color:#4a90d9}
@@ -62,13 +59,13 @@ body{background:#0d0d1a;display:flex;align-items:center;justify-content:center;m
 .si-icon-box{width:44px;height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px;background:#d8ecf8;border:2px solid #b8d4e8}
 .si-icon-box.dark{background:#1a1a2a;border-color:#333;font-size:26px}
 .si-icon-box.dark .si-icon{filter:brightness(0)}
-.si-name{font-size:6px;color:#0a2a6e;margin-bottom:2px}
-.si-desc{font-size:5px;color:#4a70ae;margin-bottom:3px}
+.si-name{font-size:11px;color:#0a2a6e;margin-bottom:2px}
+.si-desc{font-size:10px;color:#4a70ae;margin-bottom:3px}
 .si-bot{display:flex;justify-content:space-between;align-items:center}
-.si-cnt{font-size:5px;color:#1a8a3e}
-.si-sps{font-size:5px;color:#0a6a8e}
-.si-cost{font-size:7px;color:#8a4a00;font-weight:bold}
-.si-costsub{font-size:4px;color:#4a70ae}
+.si-cnt{font-size:10px;color:#1a8a3e}
+.si-sps{font-size:10px;color:#0a6a8e}
+.si-cost{font-size:12px;color:#8a4a00;font-weight:bold}
+.si-costsub{font-size:9px;color:#4a70ae}
 .si-right{text-align:right;min-width:64px;flex-shrink:0}
 
 /* Overlays */
@@ -78,95 +75,95 @@ body{background:#0d0d1a;display:flex;align-items:center;justify-content:center;m
 .ov-wood{position:absolute;left:0;right:0;height:7px;background:repeating-linear-gradient(90deg,#5a3a10 0,#7a5a20 4px,#5a3a10 8px);z-index:1}
 .ov-wood.top{top:0}.ov-wood.bot{bottom:0}
 .ov-hdr{z-index:2;padding:10px 14px 7px;border-bottom:2px solid #3a2a10;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;position:relative}
-.ov-title{font-family:'Cinzel','Georgia',serif;font-size:15px;color:#e8d8a0;text-shadow:0 0 8px #a08040}
-.ov-close{cursor:pointer;color:#c8a040;font-size:7px;padding:3px 8px;border:2px solid #7a5a20;background:#1a1008;font-family:'Press Start 2P','Courier New',monospace}
+.ov-title{font-family:'Georgia',serif;font-size:15px;color:#e8d8a0;text-shadow:0 0 8px #a08040}
+.ov-close{cursor:pointer;color:#c8a040;font-size:12px;padding:3px 8px;border:2px solid #7a5a20;background:#1a1008;font-family:'Courier New',Courier,monospace}
 .ov-close:hover{background:#3a2a10}
 .ov-scroll{overflow-y:auto;flex:1;padding:8px 14px;position:relative;z-index:2}
 .ov-scroll::-webkit-scrollbar{width:7px}
 .ov-scroll::-webkit-scrollbar-thumb{background:#5a3a10}
 
 /* Stats */
-.st-sec{font-family:'Cinzel','Georgia',serif;font-size:12px;color:#e8d8a0;margin:10px 0 5px;padding-bottom:3px;border-bottom:1px solid #3a2a10}
-.st-row{display:flex;justify-content:space-between;margin-bottom:4px;font-size:5px;color:#a09070}
+.st-sec{font-family:'Georgia',serif;font-size:16px;color:#e8d8a0;margin:10px 0 5px;padding-bottom:3px;border-bottom:1px solid #3a2a10}
+.st-row{display:flex;justify-content:space-between;margin-bottom:4px;font-size:10px;color:#a09070}
 .st-row span:first-child{color:#c8b080}
-.st-val{color:#fff;font-size:6px}
+.st-val{color:#fff;font-size:11px}
 .st-val.gold{color:#ffd060}
 .st-val.green{color:#60d890}
 .st-val.blue{color:#60b0f8}
 .brow{display:flex;align-items:center;gap:6px;background:#1a1208;border:1px solid #2a1a08;padding:4px 6px;margin-bottom:3px}
 .brow-icon{font-size:13px;width:18px;text-align:center;flex-shrink:0}
-.brow-name{font-size:5px;color:#c8b080;margin-bottom:1px}
-.brow-sub{font-size:4px;color:#806040}
-.brow-cnt{font-size:7px;color:#ffd060;min-width:24px;text-align:right}
+.brow-name{font-size:10px;color:#c8b080;margin-bottom:1px}
+.brow-sub{font-size:9px;color:#806040}
+.brow-cnt{font-size:12px;color:#ffd060;min-width:24px;text-align:right}
 
 /* Ach panel */
-.ach-sec{font-size:6px;color:#c8b080;margin:8px 0 4px;padding-bottom:3px;border-bottom:1px solid #2a1a08}
+.ach-sec{font-size:11px;color:#c8b080;margin:8px 0 4px;padding-bottom:3px;border-bottom:1px solid #2a1a08}
 .ap-row{display:flex;align-items:center;gap:5px;background:#1a1208;border:1px solid #2a1a08;padding:4px;margin-bottom:3px;cursor:pointer}
 .ap-row:hover{border-color:#5a3a10}
 .ap-icon{font-size:15px;width:22px;text-align:center;flex-shrink:0}
-.ap-name{font-size:5px;color:#c8b080;margin-bottom:1px}
-.ap-desc{font-size:4px;color:#6a5a40;line-height:1.6}
+.ap-name{font-size:10px;color:#c8b080;margin-bottom:1px}
+.ap-desc{font-size:9px;color:#6a5a40;line-height:1.6}
 .ap-bar{width:100%;height:4px;background:#0a0808;border:1px solid #1a1008;margin-top:2px}
 .ap-fill{height:100%}
-.ap-tier{font-size:4px;min-width:36px;text-align:right;flex-shrink:0}
+.ap-tier{font-size:9px;min-width:36px;text-align:right;flex-shrink:0}
 .fan-chip{font-size:20px;width:38px;height:38px;background:#1a1208;border:3px solid #2a1a08;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
 .fan-chip.earned{border-color:#ffd060}
-.fan-chip-lbl{font-size:4px;margin-top:1px}
+.fan-chip-lbl{font-size:9px;margin-top:1px}
 
 /* Admin */
 #ADMINPANEL .ov-bg{background:#001a0a}
 #ADMINPANEL .ov-wood{background:repeating-linear-gradient(90deg,#001a0a 0,#003320 4px,#001a0a 8px)}
-.adm-sec-title{font-size:6px;color:#00ff88;border-bottom:1px solid #003320;padding-bottom:3px;margin:10px 0 5px}
+.adm-sec-title{font-size:11px;color:#00ff88;border-bottom:1px solid #003320;padding-bottom:3px;margin:10px 0 5px}
 .adm-row{display:flex;gap:4px;margin-bottom:4px;align-items:center}
-.adm-lbl{font-size:5px;color:#00aa55;min-width:72px;flex-shrink:0}
-.adm-inp{background:#001a0a;border:1px solid #006633;color:#00ff88;font-family:'Press Start 2P','Courier New',monospace;font-size:5px;padding:3px 5px;flex:1;outline:none}
+.adm-lbl{font-size:10px;color:#00aa55;min-width:72px;flex-shrink:0}
+.adm-inp{background:#001a0a;border:1px solid #006633;color:#00ff88;font-family:'Courier New',Courier,monospace;font-size:10px;padding:3px 5px;flex:1;outline:none}
 .adm-inp:focus{border-color:#00ff88}
-.adm-btn{background:#002a10;border:2px solid #00aa55;color:#00ff88;font-family:'Press Start 2P','Courier New',monospace;font-size:5px;padding:3px 8px;cursor:pointer;white-space:nowrap}
+.adm-btn{background:#002a10;border:2px solid #00aa55;color:#00ff88;font-family:'Courier New',Courier,monospace;font-size:10px;padding:3px 8px;cursor:pointer;white-space:nowrap}
 .adm-btn:hover{background:#004a20}
 .adm-btn.danger{border-color:#aa2200;color:#ff4444;background:#1a0000}
 .adm-btn.danger:hover{background:#2a0000}
-.adm-msg{font-size:5px;color:#00ff88;margin-top:3px;min-height:10px}
+.adm-msg{font-size:10px;color:#00ff88;margin-top:3px;min-height:10px}
 select.adm-inp{cursor:pointer}
 
 /* Popups */
 #POPUP{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:#1a1208;border:4px solid #f0a020;padding:14px 18px;text-align:center;z-index:200;transition:transform .15s;min-width:220px;max-width:280px}
 #POPUP.show{transform:translate(-50%,-50%) scale(1)}
 #POPIC{font-size:38px;margin-bottom:6px}
-#POPTIT{font-size:7px;color:#f0a020;margin-bottom:5px}
-#POPNAME{font-size:9px;color:#e8d8a0;margin-bottom:3px}
-#POPDESC{font-size:5px;color:#a09070;line-height:2}
-#POPREWARD{font-size:5px;color:#60d890;margin-top:5px}
+#POPTIT{font-size:12px;color:#f0a020;margin-bottom:5px}
+#POPNAME{font-size:14px;color:#e8d8a0;margin-bottom:3px}
+#POPDESC{font-size:10px;color:#a09070;line-height:2}
+#POPREWARD{font-size:10px;color:#60d890;margin-top:5px}
 #FANREWARD{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:#111008;border:5px solid #ffd060;padding:16px 20px;text-align:center;z-index:250;transition:transform .2s;min-width:260px;cursor:pointer}
 #FANREWARD.show{transform:translate(-50%,-50%) scale(1)}
 #FR-ICON{font-size:50px;margin-bottom:6px}
-#FR-TIT{font-size:7px;color:#ffd060;margin-bottom:4px}
-#FR-NAME{font-size:10px;color:#e8d8a0;margin-bottom:4px;text-transform:capitalize}
-#FR-DESC{font-size:5px;color:#a09070;line-height:2}
+#FR-TIT{font-size:12px;color:#ffd060;margin-bottom:4px}
+#FR-NAME{font-size:14px;color:#e8d8a0;margin-bottom:4px;text-transform:capitalize}
+#FR-DESC{font-size:10px;color:#a09070;line-height:2}
 #NAMEMODAL{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:#fff;border:4px solid #4a90d9;padding:14px;text-align:center;z-index:300;transition:transform .15s;min-width:240px}
 #NAMEMODAL.show{transform:translate(-50%,-50%) scale(1)}
-#NAMEMODAL h3{font-size:8px;color:#0a2a6e;margin-bottom:8px}
-#NAMEMODAL p{font-size:5px;color:#4a6a8e;margin-bottom:8px;line-height:2.2}
-#NAMINP{width:100%;background:#e8f4ff;border:2px solid #4a90d9;color:#0a2a6e;font-family:'Press Start 2P','Courier New',monospace;font-size:7px;padding:5px;outline:none;margin-bottom:4px;text-align:center}
-#NAM-MSG{font-size:5px;color:#f87171;min-height:10px;margin-bottom:4px}
+#NAMEMODAL h3{font-size:13px;color:#0a2a6e;margin-bottom:8px}
+#NAMEMODAL p{font-size:10px;color:#4a6a8e;margin-bottom:8px;line-height:2.2}
+#NAMINP{width:100%;background:#e8f4ff;border:2px solid #4a90d9;color:#0a2a6e;font-family:'Courier New',Courier,monospace;font-size:12px;padding:5px;outline:none;margin-bottom:4px;text-align:center}
+#NAM-MSG{font-size:10px;color:#f87171;min-height:10px;margin-bottom:4px}
 .nam-btns{display:flex;gap:4px}
-.nam-btn{flex:1;background:#e8f4ff;border:2px solid #4a90d9;padding:5px;font-size:6px;color:#0a2a6e;cursor:pointer;font-family:'Press Start 2P','Courier New',monospace}
+.nam-btn{flex:1;background:#e8f4ff;border:2px solid #4a90d9;padding:5px;font-size:11px;color:#0a2a6e;cursor:pointer;font-family:'Courier New',Courier,monospace}
 .nam-btn.confirm{background:#0a2a6e;color:#fff}
 .nam-btn.confirm:hover{background:#1a4a9e}
 #ADMINLOGIN{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:#001a0a;border:3px solid #00ff88;padding:16px;text-align:center;z-index:400;min-width:240px;transition:transform .15s}
 #ADMINLOGIN.show{transform:translate(-50%,-50%) scale(1)}
-#ADMINLOGIN h3{font-size:8px;color:#00ff88;margin-bottom:8px}
-#ADMINLOGIN p{font-size:5px;color:#00aa55;margin-bottom:8px;line-height:2}
-#ADMIN-PW-INP{width:100%;background:#000a05;border:2px solid #006633;color:#00ff88;font-family:'Press Start 2P','Courier New',monospace;font-size:7px;padding:5px;outline:none;margin-bottom:5px;text-align:center;letter-spacing:3px}
-#ADMIN-PW-MSG{font-size:5px;color:#ff4444;min-height:8px;margin-bottom:5px}
+#ADMINLOGIN h3{font-size:13px;color:#00ff88;margin-bottom:8px}
+#ADMINLOGIN p{font-size:10px;color:#00aa55;margin-bottom:8px;line-height:2}
+#ADMIN-PW-INP{width:100%;background:#000a05;border:2px solid #006633;color:#00ff88;font-family:'Courier New',Courier,monospace;font-size:12px;padding:5px;outline:none;margin-bottom:5px;text-align:center;letter-spacing:3px}
+#ADMIN-PW-MSG{font-size:10px;color:#ff4444;min-height:8px;margin-bottom:5px}
 .adm-login-btns{display:flex;gap:4px}
 
 /* Float text & particles */
-.ftxt{position:absolute;font-family:'Press Start 2P','Courier New',monospace;font-size:8px;color:#0a2a8e;pointer-events:none;z-index:20;animation:fu .8s ease-out forwards;text-shadow:1px 1px #fff}
+.ftxt{position:absolute;font-family:'Courier New',Courier,monospace;font-size:13px;color:#0a2a8e;pointer-events:none;z-index:20;animation:fu .8s ease-out forwards;text-shadow:1px 1px #fff}
 @keyframes fu{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-50px)}}
 .px{position:absolute;width:4px;height:4px;opacity:0;animation:pxf 1s ease-out forwards;pointer-events:none}
 @keyframes pxf{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(0) translateY(-30px)}}
 #PIXBG{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:hidden}
-#TIP{position:fixed;background:#0a0808;border:3px solid #7a5a20;padding:6px 8px;font-family:'Press Start 2P','Courier New',monospace;font-size:5px;color:#c8b080;pointer-events:none;z-index:600;max-width:190px;line-height:2;display:none}
+#TIP{position:fixed;background:#0a0808;border:3px solid #7a5a20;padding:6px 8px;font-family:'Courier New',Courier,monospace;font-size:10px;color:#c8b080;pointer-events:none;z-index:600;max-width:190px;line-height:2;display:none}
 </style>
 </head>
 <body>
@@ -206,7 +203,7 @@ select.adm-inp{cursor:pointer}
   <div id="RP">
     <div id="UPGROW-HDR">✦ upgrades available</div>
     <div id="UPGROW"></div>
-    <div id="SHOPHDR"><span>🏪 shop</span><span id="SHOP-LBL" style="font-size:5px;color:#0a6a8e"></span></div>
+    <div id="SHOPHDR"><span>🏪 shop</span><span id="SHOP-LBL" style="font-size:10px;color:#0a6a8e"></span></div>
     <div id="SHOPSCROLL"></div>
   </div>
 
@@ -270,7 +267,7 @@ select.adm-inp{cursor:pointer}
       </div>
 
       <div class="adm-sec-title">📊 Analytics</div>
-      <div id="ADM-ANALYTICS" style="font-size:5px;color:#00aa55;line-height:2.2"></div>
+      <div id="ADM-ANALYTICS" style="font-size:10px;color:#00aa55;line-height:2.2"></div>
     </div>
   </div>
 
@@ -280,7 +277,7 @@ select.adm-inp{cursor:pointer}
     <div id="FR-TIT">🎉 new fan unlocked!</div>
     <div id="FR-NAME">Fan Name</div>
     <div id="FR-DESC">You earned a new fan!</div>
-    <div style="font-size:4px;color:#60d890;margin-top:6px">(click to dismiss)</div>
+    <div style="font-size:9px;color:#60d890;margin-top:6px">(click to dismiss)</div>
   </div>
 
   <!-- ACH POPUP -->
@@ -705,7 +702,7 @@ function renderStats(){
     sc.appendChild(r);
   });
   sec('Fans Earned');
-  if(!G.fansEarned.length){const e=document.createElement('div');e.style.cssText='font-size:5px;color:#5a4a30;margin-bottom:6px';e.textContent='Unlock 25 achievements to earn your first fan!';sc.appendChild(e)}
+  if(!G.fansEarned.length){const e=document.createElement('div');e.style.cssText='font-size:10px;color:#5a4a30;margin-bottom:6px';e.textContent='Unlock 25 achievements to earn your first fan!';sc.appendChild(e)}
   const fg=document.createElement('div');fg.style.cssText='display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px';
   G.fansEarned.forEach(f=>{
     const chip=document.createElement('div');chip.className='fan-chip earned';
